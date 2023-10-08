@@ -9,9 +9,9 @@ import BackofficeHome from "./components/Home//BackofficeHome";
 
 
 // Import Ticket Booking Management Componets
-import NewReservations from "./components/Ticket Booking Management/NewReservation";
-import UpdateReservation from "./components/Ticket Booking Management/UpdateReservation";
-import ViewReservations from "./components/Ticket Booking Management/ViewResrvations";
+import NewReservations from "./components/Ticket Booking Management/IT20131456/NewReservation";
+import UpdateReservation from "./components/Ticket Booking Management/IT20131456/UpdateReservation";
+import ViewReservations from "./components/Ticket Booking Management/IT20131456/ViewResrvations";
 
 
 import LandingPage from "./components/LandingPage/LandingPage";

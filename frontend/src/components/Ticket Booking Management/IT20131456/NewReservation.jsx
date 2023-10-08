@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrainSubway,faCoins, faCircleCheck, faPersonWalkingLuggage,faCircleXmark} from "@fortawesome/free-solid-svg-icons";
-import TravelAgentNavBar from "../Navbar/Travel Agent";
+import TravelAgentNavBar from "../../Navbar/Travel Agent";
 import { getCurrentDate, getFormattedDates } from "./Validations/DateValidations";
 import { validateNIC } from "./Validations/NicValidation";
 import { calculateTotalPrice } from "./Validations/TicketPriceValidation";
