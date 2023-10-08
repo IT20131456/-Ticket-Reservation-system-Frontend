@@ -5,6 +5,7 @@ import { faTrainSubway,faCoins, faCircleCheck, faPersonWalkingLuggage,faCircleXm
 import TravelAgentNavBar from "../Navbar/Travel Agent";
 import { getCurrentDate, getFormattedDates } from "./Validations/DateValidations";
 import { validateNIC } from "./Validations/NicValidation";
+import { calculateTotalPrice } from "./Validations/TicketPriceValidation";
 
 
 export default function NewReservations() {
@@ -26,17 +27,6 @@ export default function NewReservations() {
   const currentDate = getCurrentDate();
   const { formattedCurrentDate, formattedMinDate, formattedMaxDate } = getFormattedDates(currentDate);
   
-
-  const onSubmit = (e) => {};
-
-
-
-  const classPrices = {
-    1: 1000, // First Class price per ticket
-    2: 800,  // Second Class price per ticket
-    3: 500   // Third Class price per ticket
-  };
-
   const handleClassChange = (e) => {
     setSelectedClass(parseInt(e.target.value, 10)); // Parse the value to an integer
   };
@@ -45,18 +35,13 @@ export default function NewReservations() {
     setNumberOfTickets(parseInt(e.target.value, 10)); // Parse the value to an integer
   };
 
-  const calculateTotalPrice = () => {
-    if (selectedClass && numberOfTickets) {
-      const classPrice = classPrices[selectedClass]; // Get the price based on selected class
-      const totalPrice = classPrice * numberOfTickets; // Calculate total price
-      return totalPrice;
-    }
-    return 0; // Return 0 if class or number of tickets is not selected
-  };
+  const totalPrice = calculateTotalPrice(selectedClass, numberOfTickets); // Calculate total price
+
+  const onSubmit = (e) => {};
 
   return (
     <div>
-      <TravelAgentNavBar />
+      <TravelAgentNavBar />     
 
       {/* Booking Details Form */}
 
@@ -240,7 +225,7 @@ export default function NewReservations() {
               <div className="col-md-10 mt-5 p-2 d-flex justify-content-end">
                 <label className="text-danger" style={{ fontSize: "20px" }}>
                   Total Tickets Price &nbsp;
-                  <FontAwesomeIcon icon={faCoins} /> - {calculateTotalPrice()} LKR &nbsp;&nbsp;
+                  <FontAwesomeIcon icon={faCoins} /> - {totalPrice} LKR &nbsp;&nbsp;
                 </label>
               </div>
               <div className="col-md-2 mt-5 d-flex justify-content-end">
