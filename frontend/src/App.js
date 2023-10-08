@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Home from "./components/Ticket Booking Management/Text";
-import TravelerManagement from "./components/Ticket Booking Management/IT20128036/TravelerCreateProfile";
+
+import TravelerManagement from "./components/Traveler Management/IT20128036/TravelerCreateProfile";
 
 
 // Import Navbar
