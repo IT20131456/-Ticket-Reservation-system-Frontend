@@ -6,12 +6,12 @@ function EmployeeLogin() {
 
     function onSubmitBackoffice(e) {
         e.preventDefault()
-        window.location.href = "/backoffice";
+        window.location.href = "/backofficehome";
     };
 
     function onSubmitTravelAgent(e) {
         e.preventDefault()
-        window.location.href = "/travelagent";
+        window.location.href = "/travelagenthome";
     };
     
   return (
