@@ -5,7 +5,7 @@ import Backoffice from "./components/Navbar/Backoffice";
 import TravelAgent from "./components/Navbar/Travel Agent";
 
 // Import Ticket Booking Management Componets
-import TicketBooking from "./components/Ticket Booking Management/NewReservations";
+import NewReservations from "./components/Ticket Booking Management/NewReservations";
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
         <Route path="/travelagent" element={<TravelAgent />} />
 
         {/* Ticket Booking Management */}
-        <Route path="/ticketbooking" element={<TicketBooking />} />
+        <Route path="/newreservation" element={<NewReservations />} />
       </Routes>
     </BrowserRouter>
   );
