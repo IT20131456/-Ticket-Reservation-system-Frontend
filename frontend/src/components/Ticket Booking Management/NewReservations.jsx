@@ -1,19 +1,62 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {  faTrainSubway, faPersonWalkingLuggage,faCoins} from "@fortawesome/free-solid-svg-icons";
+import { faTrainSubway,faCoins, faCircleCheck, faPersonWalkingLuggage,faCircleXmark} from "@fortawesome/free-solid-svg-icons";
 import TravelAgentNavBar from "../Navbar/Travel Agent";
-import logo from "../../images/logo.png";
+import { getCurrentDate, getFormattedDates } from "./Validations/DateValidations";
+import { validateNIC } from "./Validations/NicValidation";
 
 
 export default function NewReservations() {
 
+  const [enteredNIC, setEnteredNIC] = useState("");
+  const [error, setError] = useState(""); 
+  const [success, setSuccess] = useState("");
+  const [selectedClass, setSelectedClass] = useState("");
+  const [numberOfTickets, setNumberOfTickets] = useState(1);
+  const [isInputGroupDisabled, setIsInputGroupDisabled] = useState(true);
 
-    const onSubmit = (e) => {};
+  const onSubmitNIC = () => {
+    const { success: successMessage, error: errorMessage } = validateNIC(parseInt(enteredNIC, 10));
+    setSuccess(successMessage);
+    setError(errorMessage);
+    setIsInputGroupDisabled(errorMessage ? true : false);
+  };
+
+  const currentDate = getCurrentDate();
+  const { formattedCurrentDate, formattedMinDate, formattedMaxDate } = getFormattedDates(currentDate);
+  
+
+  const onSubmit = (e) => {};
+
+
+
+  const classPrices = {
+    1: 1000, // First Class price per ticket
+    2: 800,  // Second Class price per ticket
+    3: 500   // Third Class price per ticket
+  };
+
+  const handleClassChange = (e) => {
+    setSelectedClass(parseInt(e.target.value, 10)); // Parse the value to an integer
+  };
+
+  const handleTicketCountChange = (e) => {
+    setNumberOfTickets(parseInt(e.target.value, 10)); // Parse the value to an integer
+  };
+
+  const calculateTotalPrice = () => {
+    if (selectedClass && numberOfTickets) {
+      const classPrice = classPrices[selectedClass]; // Get the price based on selected class
+      const totalPrice = classPrice * numberOfTickets; // Calculate total price
+      return totalPrice;
+    }
+    return 0; // Return 0 if class or number of tickets is not selected
+  };
 
   return (
     <div>
-      <TravelAgentNavBar />   
+      <TravelAgentNavBar />
 
       {/* Booking Details Form */}
 
@@ -21,15 +64,19 @@ export default function NewReservations() {
         <Container className="shadow pt-2 pb-2 bg-white mt-4 border rounded">
           <Form className="mt-2 p-3">
             <div className="row">
-              <h4 className="text-center text-success">05 Yarl Devi Express</h4>
-              <h6 className="text-center">Colombo - Badulla</h6>
+              <h3 className="text-center text-success">
+                05 Yarl Devi Express &nbsp;
+                <FontAwesomeIcon icon={faTrainSubway} />
+              </h3>
+              <h5 className="text-center">Colombo - Badulla</h5>
             </div>
             <div className="row mt-4">
               <div className="col-md-9">
                 <h5>
-                  Booking Details &nbsp; <FontAwesomeIcon icon={faTrainSubway} />
+                  Booking Details &nbsp;{" "}
+                  <FontAwesomeIcon icon={faPersonWalkingLuggage} />
                 </h5>
-              </div>              
+              </div>
               <div className="row"></div>
               <hr style={{ height: 10 }} />
             </div>
@@ -41,14 +88,13 @@ export default function NewReservations() {
                   controlId="exampleForm.ControlInput2"
                 >
                   <Form.Label>
-                    <label>Reservation ID</label>
+                    <label>Reservation No</label>
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="077 123 4567"
-                    maxLength={12}
+                    placeholder="R0001"
+                    disabled
                     // value={junction_name}
-                    // onChange={(e) => setjunction_name(e.target.value)}
                   />
                 </Form.Group>
               </div>
@@ -60,56 +106,68 @@ export default function NewReservations() {
                   <Form.Label>
                     <label>Reference ID (NIC)</label>
                   </Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="johnsmith34@gmail.com"
-                    // value={junction_id}
-                    // onChange={(e) => setjunction_id(e.target.value)}
-                  />
+                  <div className="input-group">
+                    <Form.Control
+                      type="text"
+                      placeholder="Enter NIC (Must be 12 Numbers)"
+                      maxLength={12}
+                      value={enteredNIC}
+                      onChange={(e) => setEnteredNIC(e.target.value)}
+                    />
+                    <button
+                      className="btn btn-warning"
+                      type="button"
+                      onClick={onSubmitNIC}
+                    >
+                      Validate                   
+                    </button>
+                   
+                  </div>
+                   {/* Display error message */}
+                   {error && <div className="text-danger">{error}&nbsp;<FontAwesomeIcon icon={faCircleXmark} /></div>}
+                   {/* Display success message */}
+                   {success && <div className="text-success">{success}&nbsp;<FontAwesomeIcon icon={faCircleCheck} /></div>}
                 </Form.Group>
               </div>
             </div>
-            
+
             <div className="row">
               <div className="col-md-6">
-              <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput2"
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput2"
+                >
+                  <Form.Label>
+                    <label>From</label>
+                  </Form.Label>
+                  <Form.Select
+                    aria-label="Default select example"
+                    disabled={isInputGroupDisabled}
+                    // value={junction_type}
+                    // onChange={(e) => setjunction_type(e.target.value)}
                   >
-                    <Form.Label>
-                      <label>From</label>
-                    </Form.Label>                  
-                    <Form.Select
-                      aria-label="Default select example"                    
-                      // value={junction_type}
-                      // onChange={(e) => setjunction_type(e.target.value)}
-                    >
-                      <option>Choose Station</option>
-                      <option value="1">Colombo</option>
-                      <option value="2">Mount-Lavinia</option>
-                      <option value="2">Maradana </option>
-                    </Form.Select>
-                  </Form.Group>
+                    <option>Choose Station</option>
+                    <option value="Colombo">Colombo</option>
+                    <option value="Mount-Lavinia">Mount-Lavinia</option>
+                    <option value="Maradana">Maradana </option>
+                  </Form.Select>
+                </Form.Group>
               </div>
               <div className="col-md-6">
-              <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput2"
-                  >
-                    <Form.Label>
-                      <label>To</label>
-                    </Form.Label>                  
-                    <Form.Select
-                      aria-label="Default select example"                    
-                      // value={junction_type}
-                      // onChange={(e) => setjunction_type(e.target.value)}
-                    >
-                      <option>Choose Station</option>
-                      <option value="1">Badulla</option>
-                      <option value="2">Kankasanthurai</option>
-                      <option value="2">Matara </option>
-                    </Form.Select>
-                  </Form.Group>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput2"
+                >
+                  <Form.Label>
+                    <label>To</label>
+                  </Form.Label>
+                  <Form.Select aria-label="Default select example" disabled={isInputGroupDisabled}>
+                    <option>Choose Station</option>
+                    <option value="Badulla">Badulla</option>
+                    <option value="Kankasanthurai">Kankasanthurai</option>
+                    <option value="Matara">Matara</option>
+                  </Form.Select>
+                </Form.Group>
               </div>
             </div>
 
@@ -124,10 +182,9 @@ export default function NewReservations() {
                   </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="077 123 4567"
+                    placeholder={formattedCurrentDate}
                     maxLength={12}
-                    // value={junction_name}
-                    // onChange={(e) => setjunction_name(e.target.value)}
+                    disabled                   
                   />
                 </Form.Group>
               </div>
@@ -140,10 +197,10 @@ export default function NewReservations() {
                     <label>Reservation Date</label>
                   </Form.Label>
                   <Form.Control
-                    type="text"
-                    placeholder="johnsmith34@gmail.com"
-                    // value={junction_id}
-                    // onChange={(e) => setjunction_id(e.target.value)}
+                    type="date"                  
+                   min={formattedMinDate}
+                   max={formattedMaxDate}
+                  disabled={isInputGroupDisabled}
                   />
                 </Form.Group>
               </div>
@@ -151,24 +208,20 @@ export default function NewReservations() {
 
             <div className="row">
               <div className="col-md-6">
-              <Form.Group
-                    className="mb-3"
-                    controlId="exampleForm.ControlInput2"
-                  >
-                    <Form.Label>
-                      <label>Ticket Class</label>
-                    </Form.Label>                  
-                    <Form.Select
-                      aria-label="Default select example"                    
-                      // value={junction_type}
-                      // onChange={(e) => setjunction_type(e.target.value)}
-                    >
-                      <option>Choose Class</option>
-                      <option value="1">First Class</option>
-                      <option value="2">Second Class</option>
-                      <option value="2">Third Class </option>
-                    </Form.Select>
-                  </Form.Group>
+                <Form.Group
+                  className="mb-3"
+                  controlId="exampleForm.ControlInput2"
+                >
+                  <Form.Label>
+                    <label>Ticket Class</label>
+                  </Form.Label>
+                  <Form.Select aria-label="Default select example" onChange={handleClassChange} disabled={isInputGroupDisabled}>
+                    <option>Choose Class</option>
+                    <option value="1">First Class</option>
+                    <option value="2">Second Class</option>
+                    <option value="3">Third Class </option>
+                  </Form.Select>
+                </Form.Group>
               </div>
               <div className="col-md-6">
                 <Form.Group
@@ -178,34 +231,28 @@ export default function NewReservations() {
                   <Form.Label>
                     <label>Number of Tickets</label>
                   </Form.Label>
-                  <Form.Control
-                    type="number"
-                    placeholder="johnsmith34@gmail.com"
-                    // value={junction_id}
-                    // onChange={(e) => setjunction_id(e.target.value)}
-                  />
+                  <Form.Control type="number" max={25} min={1} onChange={handleTicketCountChange} disabled={isInputGroupDisabled}/>
                 </Form.Group>
               </div>
             </div>
-             {/* Submit Button */}
-             <div className="row">           
-                <div className="col-md-10 mt-5 p-2 d-flex justify-content-end">
-                <label className="text-danger" > Total Tickets Price &nbsp;<FontAwesomeIcon icon={faCoins} /> - LKR 6000 &nbsp;&nbsp;</label>
-                </div>
-                <div className="col-md-2 mt-5 d-flex justify-content-end">
+            {/* Submit Button */}
+            <div className="row">
+              <div className="col-md-10 mt-5 p-2 d-flex justify-content-end">
+                <label className="text-danger" style={{ fontSize: "20px" }}>
+                  Total Tickets Price &nbsp;
+                  <FontAwesomeIcon icon={faCoins} /> - {calculateTotalPrice()} LKR &nbsp;&nbsp;
+                </label>
+              </div>
+              <div className="col-md-2 mt-5 d-flex justify-content-end">
                 <Button variant="success" type="submit" onClick={onSubmit}>
                   Make Reservation
-                  </Button>
-                </div>
-                  
-                  
-                
+                </Button>
               </div>
+            </div>
           </Form>
         </Container>
-      </div>      
+      </div>
       <div className="mt-5"></div>
-
     </div>
   );
 }
