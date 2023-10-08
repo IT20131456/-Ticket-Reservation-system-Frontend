@@ -1,5 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
+import Home from "./components/Ticket Booking Management/Text";
+import TravelerManagement from "./components/Ticket Booking Management/IT20128036/TravelerCreateProfile";
+
+
 // Import Navbar
 import Backoffice from "./components/Navbar/Backoffice";
 import TravelAgent from "./components/Navbar/Travel Agent";
@@ -10,10 +14,18 @@ import LandingPage from "./components/LandingPage/LandingPage";
 import EmployeeLogin from "./components/Login/EmployeeLogin";
 import AdminLogin from "./components/Login/AdminLogin";
 
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+
+        {/* ---------------Admin--------------- */}
+       
+        <Route path="/traveler" element={<TravelerManagement />} />
+        
+
+
 
         <Route path="/" element={<LandingPage />} />
         <Route path="/employee/login" element={<EmployeeLogin />} />
