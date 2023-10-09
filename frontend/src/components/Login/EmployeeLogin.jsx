@@ -36,7 +36,7 @@ function EmployeeLogin() {
         //localStorage.setItem('sessionToken', response.data.sessionToken);
         // add the data field of the response to the local storage
         localStorage.setItem('sessionData', JSON.stringify(response.data.data));
-        console.log(localStorage.getItem('sessionData'));
+        localStorage.setItem('userType', "backendOfficeStaff");
 
         // Redirect to the back office page
         window.location.href = "/backoffice";
@@ -66,7 +66,7 @@ function EmployeeLogin() {
         console.log('Login successful');
         // Store the session token in localStorage (you can also use cookies)
         localStorage.setItem('sessionToken', response.data.sessionToken);
-
+        localStorage.setItem('userType', "travelAgent");
         // Redirect to the travel agent page
         window.location.href = "/travelagent";
       } else {
