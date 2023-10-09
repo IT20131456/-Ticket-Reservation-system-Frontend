@@ -11,6 +11,7 @@ function BackOfficeStaffRegistration() {
     const [mobile, setMobile] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isAdmin, setIsAdmin] = useState(false);
 
     const onSubmitForm = async (e) => {
         e.preventDefault();
@@ -25,6 +26,7 @@ function BackOfficeStaffRegistration() {
                 MobileNumber: mobile,
                 UserName: username,
                 HashedPassword: password,
+                IsAdmin: isAdmin
             });
 
             // TODO: Handle the response, e.g., redirect or show a success message
@@ -95,6 +97,15 @@ function BackOfficeStaffRegistration() {
                                             id="back-office-mobile"
                                             value={mobile}
                                             onChange={(e) => setMobile(e.target.value)}
+                                        />
+                                    </div>
+                                    <div className="input-group">
+                                        <label htmlFor="back-office-isadmin">Enable Admin Privileges</label>
+                                        <input
+                                            type="checkbox"
+                                            id="back-office-isadmin"
+                                            checked={isAdmin}
+                                            onChange={(e) => setIsAdmin(e.target.checked)}
                                         />
                                     </div>
                                     <div className="input-group">
