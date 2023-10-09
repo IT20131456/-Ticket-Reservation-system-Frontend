@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Form, Container, Table, Badge } from "react-bootstrap";
 import BackofficeNavBar from "../Navbar/Backoffice";
-import {BASEURL} from '../Common';
+import {BASEURL_LOCAL_LOSHITH} from '../Common';
 
 export default function ViewTrainSchedule() {
   const [trainScheduleData, setTrainScheduleData] = useState([]);
 
   const fetchData = () => {
     axios
-      .get("http://localhost:5041/api/trainschedule")
+      .get(`${BASEURL_LOCAL_LOSHITH}/api/trainschedule`)
       .then((res) => {
         setTrainScheduleData(res.data);
       })
@@ -19,9 +19,8 @@ export default function ViewTrainSchedule() {
   };
 
   useEffect(() => {
-    const intervalId = setInterval(fetchData, 2000);
+    fetchData();
 
-    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -32,6 +31,12 @@ export default function ViewTrainSchedule() {
           <div className="row">
             <div className="col-md-9">
               <h5>Train Schedules</h5>
+            </div>
+
+            <div className="col-md-4">
+                <a className="btn btn-success m-2" href="/trainschedule/add">
+                  Add Train Schedule
+                </a>
             </div>
 
             <div className="row"></div>
@@ -54,7 +59,7 @@ export default function ViewTrainSchedule() {
                   <th>Departure Time</th>
                   <th>Arrival Time</th>
                   <th>Travel Duration</th>
-                  <th>Stops</th>
+                  {/* <th>Stops</th> */}
                   <th>Seat Classes</th>
                   <th>No of Seats</th>
                 </tr>
@@ -72,7 +77,7 @@ export default function ViewTrainSchedule() {
                       <td>{feed.departure_time}</td>
                       <td>{feed.arrival_time}</td>
                       <td>{feed.travel_duration}</td>
-                      <td>{feed.intermediate_stops}</td>
+                      {/* <td>{feed.intermediate_stops}</td> */}
                       <td>{feed.seat_classes}</td>
                       <td>{feed.number_of_seats}</td>
                       {/* {feed.lane01CounterTime === "40" ? (

@@ -1,1 +1,1 @@
-export const BASEURL = "http://localhost:5041";
+export const BASEURL_LOCAL_LOSHITH = "http://localhost:5041";
