@@ -32,9 +32,9 @@ function Backoffice() {
             navbarScroll
           >
             <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Link</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+            <Nav.Link href="./traveler">Travelers</Nav.Link>
+            <NavDropdown title="Trains" id="navbarScrollingDropdown">
+              <NavDropdown.Item href="#action3">Trains</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
                 Another action
               </NavDropdown.Item>
@@ -44,7 +44,7 @@ function Backoffice() {
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="#" disabled>
-              Link
+              Passenager
             </Nav.Link>
           </Nav>
           <Form className="d-flex" style={{ marginRight: "65px" }}>
