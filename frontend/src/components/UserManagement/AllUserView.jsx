@@ -1,3 +1,4 @@
+// This page will display all the users to backend office staff
 import React, { useEffect, useState } from 'react'
 
 function AllUserView() {
@@ -28,8 +29,7 @@ function AllUserView() {
         <div>Loading session data...</div>
       ) : (
         <div>
-          {/* Render your content here using sessionData */}
-          {/* Example: */}
+          {/* Render content here using sessionData */}
           <h1>Welcome, {sessionData.userName} to All User View!</h1>
           {/* Add your content components here */}
         </div>
