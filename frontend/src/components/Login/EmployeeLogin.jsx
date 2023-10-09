@@ -32,6 +32,12 @@ function EmployeeLogin() {
       // Check if the response indicates success (adjust this based on API response structure)
       if (response && response.status === 200) {
         console.log('Login successful');
+        // Store the session token in localStorage 
+        //localStorage.setItem('sessionToken', response.data.sessionToken);
+        // add the data field of the response to the local storage
+        localStorage.setItem('sessionData', JSON.stringify(response.data.data));
+        console.log(localStorage.getItem('sessionData'));
+
         // Redirect to the back office page
         window.location.href = "/backoffice";
       } else {
@@ -58,6 +64,9 @@ function EmployeeLogin() {
       // Check if the response indicates success (need to adjust this based on your API response structure)
       if (response && response.status === 200) {
         console.log('Login successful');
+        // Store the session token in localStorage (you can also use cookies)
+        localStorage.setItem('sessionToken', response.data.sessionToken);
+
         // Redirect to the travel agent page
         window.location.href = "/travelagent";
       } else {

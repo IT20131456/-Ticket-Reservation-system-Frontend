@@ -13,8 +13,9 @@ import TicketBooking from "./components/Ticket Booking Management/NewReservation
 import LandingPage from "./components/LandingPage/LandingPage";
 import EmployeeLogin from "./components/Login/EmployeeLogin";
 import AdminLogin from "./components/Login/AdminLogin";
-import TravelAgentRegistration from "./components/Registration/travelAgentRegistration";
-import BackOfficeStaffRegistration from "./components/Registration/backOfficeStaffRegistration";
+import TravelAgentRegistration from "./components/Registration/TravelAgentRegistration";
+import BackOfficeStaffRegistration from "./components/Registration/BackOfficeStaffRegistration";
+import AllUserView from "./components/UserManagement/AllUserView";
 
 function App() {
   return (
@@ -39,8 +40,9 @@ function App() {
         <Route path="/ticketbooking" element={<TicketBooking />} />
 
         {/* User Management */}
-        <Route path="/backoffice/registration" element={< BackOfficeStaffRegistration />} />
+        <Route path="/backoffice/registration" element={<BackOfficeStaffRegistration />} />
         <Route path="/travelagent/registration" element={<TravelAgentRegistration />} />
+        <Route path="/usermanagement" element={<AllUserView />} />
       </Routes>
     </BrowserRouter>
   );
