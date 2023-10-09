@@ -43,7 +43,7 @@ function App() {
 
         {/* Ticket Booking Management */}
         <Route path="/newreservation" element={<NewReservations />} />
-        <Route path="/updatereservation" element={<UpdateReservation />} />
+        <Route path="/updatereservation/:id" element={<UpdateReservation />} />
         <Route path="/viewreservations" element={<ViewReservations />} />
 
       </Routes>
