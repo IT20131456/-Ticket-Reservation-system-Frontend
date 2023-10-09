@@ -17,6 +17,10 @@ import ViewReservations from "./components/Ticket Booking Management/IT20131456/
 import LandingPage from "./components/LandingPage/LandingPage";
 import EmployeeLogin from "./components/Login/EmployeeLogin";
 import AdminLogin from "./components/Login/AdminLogin";
+
+import TravelAgentRegistration from "./components/Registration/TravelAgentRegistration";
+import BackOfficeStaffRegistration from "./components/Registration/BackOfficeStaffRegistration";
+import AllUserView from "./components/UserManagement/AllUserView";
 import AddTrainSchedule from "./components/TrainManagement/AddTrainSchedule";
 import ViewTrainSchedule from "./components/TrainManagement/ViewTrainSchedule";
 
@@ -44,6 +48,12 @@ function App() {
 
 
         {/* Ticket Booking Management */}
+        <Route path="/ticketbooking" element={<TicketBooking />} />
+
+        {/* User Management */}
+        <Route path="/backoffice/registration" element={<BackOfficeStaffRegistration />} />
+        <Route path="/travelagent/registration" element={<TravelAgentRegistration />} />
+        <Route path="/usermanagement" element={<AllUserView />} />
         <Route path="/newreservation" element={<NewReservations />} />
         <Route path="/updatereservation" element={<UpdateReservation />} />
         <Route path="/viewreservations" element={<ViewReservations />} />
