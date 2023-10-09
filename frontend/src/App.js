@@ -3,13 +3,15 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import TravelerManagement from "./components/Traveler Management/IT20128036/TravelerCreateProfile";
 
+//Import Home Pages
+import TravelAgentHome from "./components/Home/TravelAgentHome";
+import BackofficeHome from "./components/Home//BackofficeHome";
 
-// Import Navbar
-import Backoffice from "./components/Navbar/Backoffice";
-import TravelAgent from "./components/Navbar/Travel Agent";
 
 // Import Ticket Booking Management Componets
-import NewReservations from "./components/Ticket Booking Management/NewReservations";
+import NewReservations from "./components/Ticket Booking Management/IT20131456/NewReservation";
+import UpdateReservation from "./components/Ticket Booking Management/IT20131456/UpdateReservation";
+import ViewReservations from "./components/Ticket Booking Management/IT20131456/ViewResrvations";
 
 
 import LandingPage from "./components/LandingPage/LandingPage";
@@ -36,14 +38,20 @@ function App() {
         <Route path="/employee/login" element={<EmployeeLogin />} />
         <Route path="/admin/login" element={<AdminLogin />} />
 
-        <Route path="/backoffice" element={<Backoffice />} />
-        <Route path="/travelagent" element={<TravelAgent />} />
+      {/* Home Pages */}
+        <Route path="/travelagenthome" element={<TravelAgentHome />} />
+        <Route path="/backofficehome" element={<BackofficeHome />} />
+
 
         {/* Ticket Booking Management */}
         <Route path="/newreservation" element={<NewReservations />} />
-
+        <Route path="/updatereservation" element={<UpdateReservation />} />
+        <Route path="/viewreservations" element={<ViewReservations />} />
+          
+          
         <Route path="/trainschedule/add" element={<AddTrainSchedule />} />
         <Route path="/trainschedule/view" element={<ViewTrainSchedule />} />
+
       </Routes>
     </BrowserRouter>
   );
