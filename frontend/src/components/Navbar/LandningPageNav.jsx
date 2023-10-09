@@ -33,9 +33,9 @@ function LandningPageNav() {
             navbarScroll
           >
             <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="/ticketbooking">Ticket Booking</Nav.Link>
+            <Nav.Link href="#action1">Ticket Booking</Nav.Link>
             <Nav.Link href="#action1">Contact Us</Nav.Link>
-            <Nav.Link href="/ticketbooking">About Us</Nav.Link>
+            <Nav.Link href="#action1">About Us</Nav.Link>
             
           </Nav>
           
