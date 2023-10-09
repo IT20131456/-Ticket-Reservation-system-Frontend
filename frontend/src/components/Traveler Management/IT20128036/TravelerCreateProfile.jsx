@@ -187,10 +187,17 @@ function TravelerManagement() {
       } else {
         // Request failed, handle the error
         console.error("Request failed:", response.statusText);
+        // alert("Request failed:", response.statusText);
+        Swal.fire({
+          icon: 'error',
+          title: 'Request Failed',
+          text: response.statusText
+        });
       }
     } catch (error) {
       // Handle any network or other errors
       console.error("Error:", error.message);
+      alert("Error:", error.message);
     }
   };
 
