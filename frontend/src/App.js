@@ -17,6 +17,8 @@ import ViewReservations from "./components/Ticket Booking Management/IT20131456/
 import LandingPage from "./components/LandingPage/LandingPage";
 import EmployeeLogin from "./components/Login/EmployeeLogin";
 import AdminLogin from "./components/Login/AdminLogin";
+import AddTrainSchedule from "./components/TrainManagement/AddTrainSchedule";
+import ViewTrainSchedule from "./components/TrainManagement/ViewTrainSchedule";
 
 
 
@@ -45,6 +47,10 @@ function App() {
         <Route path="/newreservation" element={<NewReservations />} />
         <Route path="/updatereservation" element={<UpdateReservation />} />
         <Route path="/viewreservations" element={<ViewReservations />} />
+          
+          
+        <Route path="/trainschedule/add" element={<AddTrainSchedule />} />
+        <Route path="/trainschedule/view" element={<ViewTrainSchedule />} />
 
       </Routes>
     </BrowserRouter>
