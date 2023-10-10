@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import { Form, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrainSubway,faCoins, faCircleCheck, faPersonWalkingLuggage,faCircleXmark} from "@fortawesome/free-solid-svg-icons";
@@ -7,30 +9,109 @@ import { getCurrentDate, getFormattedDates } from "./Validations/DateValidations
 import { validateNIC } from "./Validations/NicValidation";
 import { calculateTotalPrice } from "./Validations/TicketPriceValidation";
 import "./styles.css";
-import { useParams } from "react-router-dom";
+import swal from "sweetalert";
+
 
 
 export default function UpdateReservation() {
 
   const { id } = useParams();
   const [enableEditing, setEnableEditing] = useState(false);
-  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedClass, setSelectedClass] = useState("1");
   const [numberOfTickets, setNumberOfTickets] = useState(1);
+  const [booking_details, setBookingDetails] = useState([]);
+  const [reservation_no, setReservation_no] = useState("");
+  const [reference_id, setReference_id] = useState("");
+  const [train_id, setTrain_Id] = useState("");
+  const [train_name, setTrain_name] = useState("");
+  const [travel_route, setTravel_route] = useState("");
+  const [from, setFrom] = useState("");
+  const [to, setTo] = useState("");
+  const [updated_booking_date, setUpdatedBooking_date] = useState("");
+  const [reservation_date, setReservation_date] = useState("");
+  const [ticket_class, setTicket_class] = useState("");
+  const [ticket_count, setTicket_count] = useState(""); 
+  const [status, setStatus] = useState("Updated"); 
+
+  useEffect(() => {
+    axios.get(`http://localhost:5041/api/TicketBooking/${id}`).then((response) => {
+      setBookingDetails(response.data);
+      console.log(response.data.reservation_number);
+      setReservation_no(response.data.reservation_number);
+      setReference_id(response.data.reference_id);
+      setTrain_Id(response.data.train_id);
+      setTrain_name(response.data.train_name);
+      setTravel_route(response.data.travel_route);
+      setFrom(response.data.from);
+      setTo(response.data.to);
+      setUpdatedBooking_date(response.data.updated_booking_date);
+      setReservation_date(response.data.reservation_date);
+      setTicket_class(response.data.ticket_class);
+      setTicket_count(response.data.number_of_tickets);      
+     
+    });
+
+  }, []);
+
+
 
   const currentDate = getCurrentDate();
   const { formattedCurrentDate, formattedMinDate, formattedMaxDate } = getFormattedDates(currentDate);
   
   const handleClassChange = (e) => {
-    setSelectedClass(parseInt(e.target.value, 10)); // Parse the value to an integer
+    setTicket_class(e.target.value); // Set ticket_class state
+    setSelectedClass(parseInt(e.target.value, 10)); // Parse the value to an integer and set another state if needed
   };
+  
 
   const handleTicketCountChange = (e) => {
+    setTicket_count(e.target.value); // Set ticket_count state
     setNumberOfTickets(parseInt(e.target.value, 10)); // Parse the value to an integer
   };
 
   const totalPrice = calculateTotalPrice(selectedClass, numberOfTickets); // Calculate total price
 
-  const onSubmit = (e) => {};
+  const onSubmit = (e) => {
+    e.preventDefault();
+  
+    const data = {
+      Id:id,
+      reservation_number: reservation_no,
+      reference_id: reference_id,
+      train_id: train_id,
+      train_name: train_name,
+      travel_route: travel_route,
+      from: from,
+      to: to,
+      booking_date: formattedCurrentDate,
+      reservation_date: reservation_date,
+      ticket_class: selectedClass,
+      number_of_tickets: numberOfTickets,
+      total_price: totalPrice,
+      status: status,
+    };
+  console.log(data);
+    axios
+      .put(`http://localhost:5041/api/TicketBooking/${id}`, data)
+      .then((res) => {
+        // Check if the response status code is 200 (OK)
+        if (res.status === 200) {
+          swal("Ticket Booking Updated Successfully", "", "success");
+    
+          setTimeout(() => {
+            window.location = "/viewreservations";
+          }, 12000);
+        } else {
+          console.error("Error: Unexpected response from server");
+          // Handle unexpected response from the server if needed
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error.message);
+        // Handle network or other errors if needed
+      });    
+  };
+  
 
   return (
     <div className="body">
@@ -52,7 +133,7 @@ export default function UpdateReservation() {
                   <Form.Check
                     type="switch"
                     id="custom-switch"
-                    label="Enable Editing"
+                    label="&nbsp;Enable Editing"
                     checked={enableEditing}
                     onChange={() => setEnableEditing(!enableEditing)}
                   />
@@ -71,9 +152,9 @@ export default function UpdateReservation() {
                     <label>Reservation No</label>
                   </Form.Label>
                   <Form.Control
-                    type="text"
-                    placeholder="R0001"
-                    disabled                
+                    type="text"                  
+                    disabled   
+                    value={reservation_no}             
                   />
                 </Form.Group>
               </div>
@@ -87,9 +168,9 @@ export default function UpdateReservation() {
                   </Form.Label>
                   <div className="input-group">
                     <Form.Control
-                      type="text"
-                      placeholder="Enter NIC (Must be 12 Numbers)"
+                      type="text"                      
                       maxLength={12}
+                      value={reference_id}
                       disabled                    
                     />               
                    
@@ -110,8 +191,8 @@ export default function UpdateReservation() {
                   <Form.Select
                     aria-label="Default select example"
                      disabled={!enableEditing}
-                    // value={junction_type}
-                    // onChange={(e) => setjunction_type(e.target.value)}
+                    value={from}
+                    onChange={(e) => setFrom(e.target.value)}
                   >
                     <option>Choose Station</option>
                     <option value="Colombo">Colombo</option>
@@ -128,7 +209,7 @@ export default function UpdateReservation() {
                   <Form.Label>
                     <label>To</label>
                   </Form.Label>
-                  <Form.Select aria-label="Default select example"  disabled={!enableEditing}>
+                  <Form.Select aria-label="Default select example"   onChange={(e) => setTo(e.target.value)} disabled={!enableEditing} value={to}>
                     <option>Choose Station</option>
                     <option value="Badulla">Badulla</option>
                     <option value="Kankasanthurai">Kankasanthurai</option>
@@ -145,7 +226,7 @@ export default function UpdateReservation() {
                   controlId="exampleForm.ControlInput2"
                 >
                   <Form.Label>
-                    <label>Booking Date</label>
+                    <label>Updated Booking Date</label>
                   </Form.Label>
                   <Form.Control
                     type="text"
@@ -168,6 +249,8 @@ export default function UpdateReservation() {
                    min={formattedMinDate}
                    max={formattedMaxDate}
                    disabled={!enableEditing}
+                   value={reservation_date}
+                   onChange={(e) => setReservation_date(e.target.value)}
                   />
                 </Form.Group>
               </div>
@@ -182,7 +265,7 @@ export default function UpdateReservation() {
                   <Form.Label>
                     <label>Ticket Class</label>
                   </Form.Label>
-                  <Form.Select aria-label="Default select example" onChange={handleClassChange}  disabled={!enableEditing}>
+                  <Form.Select aria-label="Default select example" value={ticket_class}  onChange={(e) => handleClassChange(e)} disabled={!enableEditing}>
                     <option>Choose Class</option>
                     <option value="1">First Class</option>
                     <option value="2">Second Class</option>
@@ -198,7 +281,7 @@ export default function UpdateReservation() {
                   <Form.Label>
                     <label>Number of Tickets</label>
                   </Form.Label>
-                  <Form.Control type="number" max={25} min={1} onChange={handleTicketCountChange}  disabled={!enableEditing}/>
+                  <Form.Control type="number" placeholder={numberOfTickets}  max={25} min={1} value={ticket_count} onChange={(e) => handleTicketCountChange(e)} disabled={!enableEditing}/>
                 </Form.Group>
               </div>
             </div>
