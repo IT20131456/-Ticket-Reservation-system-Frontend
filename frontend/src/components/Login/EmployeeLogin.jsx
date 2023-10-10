@@ -39,7 +39,7 @@ function EmployeeLogin() {
         localStorage.setItem('userType', "backendOfficeStaff");
 
         // Redirect to the back office page
-        window.location.href = "/backoffice";
+        window.location.href = "/backofficehome";
       } else {
         // Handle unsuccessful login, show an error message, or perform other actions
         console.error('Login failed:', response);
@@ -68,7 +68,7 @@ function EmployeeLogin() {
         localStorage.setItem('sessionToken', response.data.sessionToken);
         localStorage.setItem('userType', "travelAgent");
         // Redirect to the travel agent page
-        window.location.href = "/travelagent";
+        window.location.href = "/travelagenthome";
       } else {
         // Handle unsuccessful login, show an error message, or perform other actions
         console.error('Login failed:', response);

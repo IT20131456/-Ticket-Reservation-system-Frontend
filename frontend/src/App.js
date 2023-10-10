@@ -31,6 +31,7 @@ import AllUserView from "./components/UserManagement/AllUserView";
 import AddTrainSchedule from "./components/TrainManagement/AddTrainSchedule";
 import ViewTrainSchedule from "./components/TrainManagement/ViewTrainSchedule";
 
+import UserDetails from "./components/UserManagement/UserDetails";
 
 
 
@@ -69,7 +70,7 @@ function App() {
         <Route path="/backoffice/registration" element={<BackOfficeStaffRegistration />} />
         <Route path="/travelagent/registration" element={<TravelAgentRegistration />} />
         <Route path="/usermanagement" element={<AllUserView />} />
-          
+        <Route path="/user-details/:id/:type" element={<UserDetails />} />
           
         <Route path="/trainschedule/add" element={<AddTrainSchedule />} />
         <Route path="/trainschedule/view" element={<ViewTrainSchedule />} />
