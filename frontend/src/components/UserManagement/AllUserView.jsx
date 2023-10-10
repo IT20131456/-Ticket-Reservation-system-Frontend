@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
 function AllUserView() {
   const [sessionData, setSessionData] = useState({});
@@ -85,7 +86,7 @@ function AllUserView() {
           <h1 style={{textAlign: 'center'}}>All Users</h1>
           <Tabs defaultActiveKey="staff" id="user-tabs">
             <Tab eventKey="staff" title="Staff">
-              <Table striped bordered hover>
+              <Table bordered hover responsive>
                 <thead>
                   <tr>
                     <th>Staff ID</th>
@@ -106,14 +107,14 @@ function AllUserView() {
                       <td>{user.email}</td>
                       <td>{user.userName}</td>
                       <td><input type='checkbox' checked={user.isAdmin} readOnly /></td>
-                      <button onClick={() => navigate(`/user-details/${user.staffId}/staff`)}>View</button>
+                      <td><Button variant="light" onClick={() => navigate(`/user-details/${user.staffId}/staff`)}>More Details</Button></td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
             </Tab>
             <Tab eventKey="travelAgent" title="Travel Agent">
-            <Table striped bordered hover>
+            <Table bordered hover responsive>
                 <thead>
                   <tr>
                     <th>Registration No.</th>
@@ -132,14 +133,14 @@ function AllUserView() {
                       <td>{user.name}</td>
                       <td>{user.email}</td>
                       <td>{user.userName}</td>
-                      <button onClick={() => navigate(`/user-details/${user.regNo}/travelagent`)}>View</button>
+                      <td><Button variant="light" onClick={() => navigate(`/user-details/${user.regNo}/travelagent`)}>More Details</Button></td>
                     </tr>
                   ))}
                 </tbody>
               </Table>
             </Tab>
             <Tab eventKey="traveler" title="Traveler">
-            <Table striped bordered hover>
+            <Table bordered hover responsive>
                 <thead>
                   <tr>
                     <th>NIC</th>
@@ -158,7 +159,7 @@ function AllUserView() {
                       <td>{user.fullName}</td>
                       <td>{user.fullName}</td>
                       <td>{user.fullName}</td>
-                      <button onClick={() => navigate(`/user-details/${user._id}/traveler`)}>View</button>
+                      <td><Button variant="light" onClick={() => navigate(`/user-details/${user.nic}/traveler`)}>More Details</Button></td>
                     </tr>
                   ))}
                 </tbody>
