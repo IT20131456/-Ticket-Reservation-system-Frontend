@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios'; 
 import logo from "../../images/logo.png";
 import BackOfficeNavBar from "../Navbar/Backoffice";
+import './style.css'
 
 function BackOfficeStaffRegistration() {
     const [empId, setEmpId] = useState('');
@@ -43,15 +44,15 @@ function BackOfficeStaffRegistration() {
     return (
         <div>
             <BackOfficeNavBar />
-            <div className="login-panel-bg">
-                <div className="login-panel">
-                    <div className="login-container">
+            <div className="reg-panel-bg">
+                <div className="reg-panel">
+                    <div className="reg-container" style={{paddingTop: '60px'}}>
                         <div className="logo-container">
                             <img src={logo} alt="Logo" width={200} height={100} />
                         </div>
-                        <div className="login-form">
+                        <div className="reg-form">
                             <div className="section">
-                                <h4>Staff Account Creation</h4>
+                                <h4 style={{ textAlign: 'center', color: '#191970' }}>Staff Account Creation</h4>
                                 <div className="divider"></div>
                                 <form onSubmit={onSubmitForm}>
                                     <div className="input-group">
@@ -127,7 +128,7 @@ function BackOfficeStaffRegistration() {
                                         />
                                     </div>
                                     <p />
-                                    <button className="login-button" type="submit">
+                                    <button className="reg-button" type="submit">
                                         Create Account
                                     </button>
                                 </form>
