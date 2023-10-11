@@ -35,7 +35,7 @@ function TravelAgentRegistration() {
             console.log('Account created successfully', response.data);
 
             // Redirect to the back office page
-            window.location.href = "/employee/reg";
+            window.location.href = "/employee/login";
         } catch (error) {
             // TODO: Handle errors, e.g., show an error message
             console.error('Error creating account:', error);
