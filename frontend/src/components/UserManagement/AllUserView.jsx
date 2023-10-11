@@ -5,6 +5,8 @@ import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
+import Backoffice from '../Navbar/Backoffice';
+import "./styles.css";
 
 function AllUserView() {
   const [sessionData, setSessionData] = useState({});
@@ -78,96 +80,99 @@ function AllUserView() {
   }
 
   return (
-    <div style={{padding: '100px'}}>
-      {loading ? (
-        <div>Loading session data...</div>
-      ) : (
-        <div>
-          <h1 style={{textAlign: 'center'}}>All Users</h1>
-          <Tabs defaultActiveKey="staff" id="user-tabs">
-            <Tab eventKey="staff" title="Staff">
-              <Table bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>Staff ID</th>
-                    <th>NIC</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Username</th>
-                    <th>Admin</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {staffList.map((user) => (
-                    <tr key={user.staffId}>
-                      <td>{user.staffId}</td>
-                      <td>{user.nic}</td>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>{user.userName}</td>
-                      <td><input type='checkbox' checked={user.isAdmin} readOnly /></td>
-                      <td><Button variant="light" onClick={() => navigate(`/user-details/${user.staffId}/staff`)}>More Details</Button></td>
+    <div className="body">
+      <Backoffice />
+      <div className="custom-container-bg-white">
+        {loading ? (
+          <div>Loading session data...</div>
+        ) : (
+          <div>
+            <h1 style={{ textAlign: 'center', color: '#191970' }}>All Accounts</h1>
+            <Tabs defaultActiveKey="staff" id="user-tabs">
+              <Tab eventKey="staff" title="Staff">
+                <Table bordered hover responsive>
+                  <thead>
+                    <tr>
+                      <th>Staff ID</th>
+                      <th>NIC</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Username</th>
+                      <th>Admin</th>
+                      <th></th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Tab>
-            <Tab eventKey="travelAgent" title="Travel Agent">
-            <Table bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>Registration No.</th>
-                    <th>NIC</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Username</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {travelAgentList.map((user) => (
-                    <tr key={user.regNo}>
-                      <td>{user.regNo}</td>
-                      <td>{user.nic}</td>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>{user.userName}</td>
-                      <td><Button variant="light" onClick={() => navigate(`/user-details/${user.regNo}/travelagent`)}>More Details</Button></td>
+                  </thead>
+                  <tbody>
+                    {staffList.map((user) => (
+                      <tr key={user.staffId}>
+                        <td>{user.staffId}</td>
+                        <td>{user.nic}</td>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.userName}</td>
+                        <td><input type='checkbox' checked={user.isAdmin} readOnly /></td>
+                        <td><Button variant="light" onClick={() => navigate(`/user-details/${user.staffId}/staff`)}>More Details</Button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Tab>
+              <Tab eventKey="travelAgent" title="Travel Agent">
+                <Table bordered hover responsive>
+                  <thead>
+                    <tr>
+                      <th>Registration No.</th>
+                      <th>NIC</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Username</th>
+                      <th></th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Tab>
-            <Tab eventKey="traveler" title="Traveler">
-            <Table bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>NIC</th>
-                    <th>Full Name</th>
-                    <th>Email</th>
-                    <th>Username</th>
-                    <th>Account Status</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {travelerList.map((user) => (
-                    <tr key={user.nic}>
-                      <td>{user.nic}</td>
-                      <td>{user.fullName}</td>
-                      <td>{user.fullName}</td>
-                      <td>{user.fullName}</td>
-                      <td>{user.fullName}</td>
-                      <td><Button variant="light" onClick={() => navigate(`/user-details/${user.nic}/traveler`)}>More Details</Button></td>
+                  </thead>
+                  <tbody>
+                    {travelAgentList.map((user) => (
+                      <tr key={user.regNo}>
+                        <td>{user.regNo}</td>
+                        <td>{user.nic}</td>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.userName}</td>
+                        <td><Button variant="light" onClick={() => navigate(`/user-details/${user.regNo}/travelagent`)}>More Details</Button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Tab>
+              <Tab eventKey="traveler" title="Traveler">
+                <Table bordered hover responsive>
+                  <thead>
+                    <tr>
+                      <th>NIC</th>
+                      <th>Full Name</th>
+                      <th>Email</th>
+                      <th>Username</th>
+                      <th>Account Status</th>
+                      <th></th>
                     </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Tab>
-          </Tabs>
-        </div>
-      )}
+                  </thead>
+                  <tbody>
+                    {travelerList.map((user) => (
+                      <tr key={user.nic}>
+                        <td>{user.nic}</td>
+                        <td>{user.fullName}</td>
+                        <td>{user.email}</td>
+                        <td>{user.username}</td>
+                        <td>{user.accountStatus}</td>
+                        <td><Button variant="light" onClick={() => navigate(`/user-details/${user.nic}/traveler`)}>More Details</Button></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </Tab>
+            </Tabs>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

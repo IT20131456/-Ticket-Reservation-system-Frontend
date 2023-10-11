@@ -46,6 +46,7 @@ function Backoffice() {
            
 
             <Nav.Link href="/trainschedule/view">Train Schedule</Nav.Link>
+            <Nav.Link href="/usermanagement">Users</Nav.Link>
             <NavDropdown title="Bookings" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
 
