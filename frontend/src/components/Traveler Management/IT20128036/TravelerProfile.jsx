@@ -11,10 +11,12 @@ import Swal from "sweetalert2";
 
 export default function ViewTravelerProfile() {
   // Use the useParams hook to get the ID from the URL
-  const { id } = useParams();
+  const { NIC } = useParams();
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [id, setId] = useState("");
 
   const [nic, setNIC] = useState("");
 
@@ -33,6 +35,16 @@ export default function ViewTravelerProfile() {
   const [isAccountActive, setIsAccountActive] = useState(true);
 
   const handleAccountStatusChange = () => {
+    // Check if there are bookings available
+    if (bookings.length > 0 && isAccountActive) {
+      // alert("You cannot deactivate your account with bookings.");
+      Swal.fire({
+        icon: "error",
+        title: "Cannot Deactivate Account",
+        text: "You cannot deactivate your account with bookings.",
+      });
+      return; // Prevent further execution of the function
+    }
     // Toggle the account status state
     setIsAccountActive(!isAccountActive);
 
@@ -40,7 +52,7 @@ export default function ViewTravelerProfile() {
     const newAccountStatus = isAccountActive ? "Inactive" : "Active";
 
     // Send a PUT request to update the account status in the API
-    fetch(`http://localhost:5041/api/Traveler/${id}`, {
+    fetch(`http://localhost:5041/api/traveler/nics/${NIC}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -79,10 +91,11 @@ export default function ViewTravelerProfile() {
 
   useEffect(() => {
     // Fetch user data from the API
-    fetch(`http://localhost:5041/api/Traveler/${id}`)
+    fetch(`http://localhost:5041/api/traveler/nic/${NIC}`)
       .then((response) => response.json())
       .then((data) => {
         // Set the state values with the data from the API response
+        setId(data.id);
         setNIC(data.nic);
         setFullName(data.fullName);
         setDOB(data.dob);
@@ -98,7 +111,24 @@ export default function ViewTravelerProfile() {
       .catch((error) => console.error("Error:", error));
   }, []);
 
-  function deleteTraveler(id) {
+  useEffect(() => {
+    // Fetch traveler booking when the component mounts
+    fetch(`http://localhost:5041/api/TicketBooking/nic/${NIC}`)
+      .then((response) => response.json())
+      .then((data) => setBookings(data))
+      .catch((error) => console.error("Error:", error));
+  }, []); // The empty dependency array ensures this effect runs once when the component mounts
+
+  function deleteTraveler(NIC) {
+    // Check if there are bookings associated with the traveler
+    if (bookings.length > 0) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "This traveler has bookings and cannot be deleted.",
+      });
+      return; // Prevent further execution of the function
+    }
     Swal.fire({
       title: "Delete Traveler",
       text: "Are you sure you want to delete this traveler?",
@@ -109,7 +139,7 @@ export default function ViewTravelerProfile() {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5041/api/Traveler/${id}`, {
+        fetch(`http://localhost:5041/api/traveler/nic/${NIC}`, {
           method: "DELETE",
         })
           .then((response) => {
@@ -299,7 +329,11 @@ export default function ViewTravelerProfile() {
                   <p1>{nic}</p1> */}
 
                   {/* <h2>Traveler Profile</h2> */}
-                  <h2 style={{ textAlign: "center" }}>Traveler Profile</h2>
+                  <h2 style={{ textAlign: "center" }}>
+                    {" "}
+                    <i class="fa fa-user-circle"></i>&nbsp;&nbsp;Traveler
+                    Profile
+                  </h2>
                   <hr></hr>
 
                   <div className="row">
@@ -345,7 +379,7 @@ export default function ViewTravelerProfile() {
                         <strong>Booking Details</strong>
                       </h5>
 
-                      <table class="table table-sm">
+                      {/* <table class="table table-sm">
                         <thead>
                           <tr>
                             <th scope="col">#</th>
@@ -373,7 +407,41 @@ export default function ViewTravelerProfile() {
                             <td>@twitter</td>
                           </tr>
                         </tbody>
-                      </table>
+                      </table> */}
+                      <hr></hr>
+                      {bookings.length > 0 ? (
+                        <table className="table table-sm">
+                          <thead>
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Train</th>
+                              <th scope="col">From</th>
+                              <th scope="col">To</th>
+                              <th scope="col">Class</th>
+                              <th scope="col">Price</th>
+                              <th scope="col">Date</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {bookings.map((booking, index) => (
+                              <tr key={booking.id}>
+                                <th scope="row">{index + 1}</th>
+                                <td>{booking.train_name}</td>
+                                <td>{booking.from}</td>
+                                <td>{booking.to}</td>
+                                <td>{booking.ticket_class}</td>
+                                <td>{booking.total_price}</td>
+                                <td>{booking.reservation_date}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        // <p>No bookings available.</p>
+                        <p className="alert alert-info">
+                          No bookings available.
+                        </p>
+                      )}
                     </div>
                   </div>
 
@@ -381,7 +449,7 @@ export default function ViewTravelerProfile() {
                     <Col>
                       <div className="col-sm-3 mt-5">
                         <Link
-                          to={`/updatetravelerprofile/${id}`}
+                          to={`/updatetravelerprofile/${NIC}`}
                           style={{ textDecoration: "none" }}
                         >
                           <a className="btn btn-primary">
@@ -402,7 +470,7 @@ export default function ViewTravelerProfile() {
                         <button
                           type="button"
                           className="btn btn-danger"
-                          onClick={() => deleteTraveler(id)}
+                          onClick={() => deleteTraveler(NIC)}
                         >
                           <i className="fa fa-trash" aria-hidden="true">
                             Delete
