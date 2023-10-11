@@ -44,11 +44,11 @@ function App() {
         <Route path="/traveler" element={<TravelerManagement />} />
         <Route path="/travelerprofiles" element={<TravelerProfiles />} />
         <Route
-          path="/viewtravelerprofile/:id"
+          path="/viewtravelerprofile/:NIC"
           element={<ViewTravelerProfile />}
         />
         <Route
-          path="/updatetravelerprofile/:id"
+          path="/updatetravelerprofile/:NIC"
           element={<UpdateTravelerProfile />}
         />
 

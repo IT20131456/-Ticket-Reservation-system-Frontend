@@ -3,11 +3,12 @@ import { Form, Button, Container, Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
 import Backoffice from "../../Navbar/Backoffice";
 import "./contactUs.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 function UpdateTravelerProfile() {
-  const { id } = useParams();
+  const navigate = useNavigate();
+  const { NIC } = useParams();
 
   const [formData, setFormData] = useState({
     nic: "",
@@ -23,8 +24,8 @@ function UpdateTravelerProfile() {
   });
 
   useEffect(() => {
-    // Fetch the traveler's data using the provided ID
-    fetch(`http://localhost:5041/api/Traveler/${id}`)
+    // Fetch the traveler's data using the provided NIC
+    fetch(`http://localhost:5041/api/traveler/nic/${NIC}`)
       .then((response) => response.json())
       .then((data) => {
         setFormData(data); // Update the form data with fetched data
@@ -32,7 +33,7 @@ function UpdateTravelerProfile() {
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
-  }, [id]);
+  }, [NIC]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,7 +44,7 @@ function UpdateTravelerProfile() {
     e.preventDefault();
 
     // Send the updated data to the backend using a PUT request
-    fetch(`http://localhost:5041/api/Traveler/${id}`, {
+    fetch(`http://localhost:5041/api/traveler/nics/${NIC}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -61,6 +62,7 @@ function UpdateTravelerProfile() {
             text: "Traveler profile updated successfully",
           });
           // Navigate to the viewtravelerprofile/id page
+          navigate(`/viewtravelerprofile/${NIC}`);
 
           //   history.push(`/viewtravelerprofile/${id}`);
         } else {
@@ -78,7 +80,12 @@ function UpdateTravelerProfile() {
       <Container>
         <div className="col-sm-12 mt-4">
           <div className="bg-white p-4 rounded shadow">
-            <h1 className="text-center mt-4">Update Traveler Profile</h1>
+            <h1 className="text-center mt-4">
+              {" "}
+              <i class="fa fa-user-circle"></i>&nbsp;&nbsp;Update Traveler
+              Profile
+            </h1>
+
             <hr></hr>
 
             <Form onSubmit={handleSubmit}>
@@ -170,7 +177,7 @@ function UpdateTravelerProfile() {
                     <Form.Control
                       type="text"
                       name="username"
-                      value={formData.username}
+                      value={formData.fullName}
                       onChange={handleChange}
                     />
                   </Form.Group>
@@ -207,7 +214,7 @@ function UpdateTravelerProfile() {
 
                 <Col>
                   <Link
-                    to={`/viewtravelerprofile/${id}`}
+                    to={`/viewtravelerprofile/${NIC}`}
                     style={{ textDecoration: "none" }}
                   >
                     <Button variant="dark" type="submit" className="mt-4">

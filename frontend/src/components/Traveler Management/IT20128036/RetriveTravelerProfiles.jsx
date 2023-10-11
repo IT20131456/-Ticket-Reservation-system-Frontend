@@ -8,6 +8,7 @@ import img1 from "../../../images/user.jpg";
 
 import Backoffice from "../../Navbar/Backoffice";
 import { Link } from "react-router-dom";
+import "./contactUs.css";
 
 function TravelerProfiles() {
   const [travelers, setTravelers] = useState([]);
@@ -29,16 +30,16 @@ function TravelerProfiles() {
   };
 
   return (
-    <div>
+    <div className="inq_container" style={{ minHeight: "100vh" }}>
       <Backoffice />
       <div className="container mt-5">
-        <h1 className="text-center mb-4">Traveler Profiles</h1>
+        <h1 className="text-center mb-4">  <i class="fa fa-user-circle"></i>&nbsp;&nbsp;Traveler Profiles</h1>
         <div className="row">
           {travelers.map((traveler) => (
             <div key={traveler.Id} className="col-md-6 mb-3">
               <div className="list-group">
                 <Link
-                  to={`/viewtravelerprofile/${traveler.id}`}
+                  to={`/viewtravelerprofile/${traveler.nic}`}
                   style={{ textDecoration: "none" }}
                 >
                   <li className="list-group-item" variant="danger">
