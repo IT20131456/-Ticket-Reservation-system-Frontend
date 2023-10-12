@@ -90,7 +90,7 @@ function TravelAgentRegistration() {
                             Registration No.
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={regNo} onChange={(e) => setRegNo(e.target.value)} />
+                            <Form.Control type="text" value={regNo} onChange={(e) => setRegNo(e.target.value)} placeholder="Registration Number (Ex. AG001)" />
                             {errors.regNo &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.regNo}
@@ -102,7 +102,7 @@ function TravelAgentRegistration() {
                             NIC
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={nic} onChange={(e) => setNic(e.target.value)} />
+                            <Form.Control type="text" value={nic} onChange={(e) => setNic(e.target.value)} placeholder="NIC Number (Ex. 123456789v or 199012345678)"/>
                             {errors.nic &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.nic}
@@ -114,7 +114,7 @@ function TravelAgentRegistration() {
                             Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                            <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" />
                             {errors.name &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.name}
@@ -126,7 +126,7 @@ function TravelAgentRegistration() {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                             {errors.email &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.email}
@@ -138,7 +138,7 @@ function TravelAgentRegistration() {
                             Mobile Number
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={mobile} onChange={(e) => setMobile(e.target.value)} />
+                            <Form.Control type="text" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder="Mobile Number (Ex. 0771234567 or +94771234567)"/>
                             {errors.mobile &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.mobile}
@@ -150,7 +150,7 @@ function TravelAgentRegistration() {
                             Username
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username"/>
                             {errors.username &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.username}
@@ -162,7 +162,7 @@ function TravelAgentRegistration() {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                             {errors.password &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.password}
