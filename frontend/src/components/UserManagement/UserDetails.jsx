@@ -56,7 +56,7 @@ function UserDetails() {
 
 
     function deactivateAccount() {
-        updateAccount("Deactive")
+        updateAccount("Inactive")
     }
 
     function activateAccount() {
@@ -65,7 +65,7 @@ function UserDetails() {
 
     async function updateAccount(status) {
         try {
-
+            // get the user confirmation before updating the account status
             swal("Are you sure you want to update this user data?", {
                 buttons: {
                     cancel: "Cancel",
@@ -73,48 +73,53 @@ function UserDetails() {
                         text: "Confirm",
                         value: "confirmed",
                     },
-                    defeat: true,
                 },
-            })
-                .then((value) => {
-                    if (value === "confirmed") {
-                        const updatedData = {
-                            id: travelerData._id,
-                            nic: travelerData.nic,
-                            fullName: travelerData.fullName,
-                            dob: travelerData.dob,
-                            gender: travelerData.gender,
-                            contact: travelerData.contact,
-                            email: travelerData.email,
-                            address: travelerData.address,
-                            username: travelerData.username,
-                            passwordHash: travelerData.passwordHash,
-                            profile: travelerData.profile,
-                            travelerType: travelerData.travelerType,
-                            accountStatus: status,
-                            createdAt: travelerData.createdAt
-                        };
+            }).then((value) => {
+                if (value === "confirmed") {
+                    const updatedData = {
+                        id: travelerData.id,
+                        nic: travelerData.nic,
+                        fullName: travelerData.fullName,
+                        dob: travelerData.dob,
+                        gender: travelerData.gender,
+                        contact: travelerData.contact,
+                        email: travelerData.email,
+                        address: travelerData.address,
+                        username: travelerData.username,
+                        passwordHash: travelerData.passwordHash,
+                        profile: travelerData.profile,
+                        travelerType: travelerData.travelerType,
+                        accountStatus: status,
+                        createdAt: travelerData.createdAt
+                    };
 
-                        fetch(`http://localhost:5041/api/Traveler/nic/${id}`, {
-                            method: "PUT",
-                            headers: {
-                                "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify(updatedData),
+                    fetch(`http://localhost:5041/api/Traveler/nics/${id}`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(updatedData),
+                    })
+                        .then((response) => {
+                            if (response.ok) {
+                                // Assuming your backend responds with text
+                                return response.text();
+                            }
+                            throw new Error(`HTTP error! Status: ${response.status}`);
                         })
-                            .then((response) => response.json())
-                            .then((data) => {
-                                swal("Success", "User data updated successfully", "success");
-                            })
-                            .catch((error) => {
-                                console.error("PUT request error: ", error);
-                                swal("Error", "Failed to update user data", "error");
-                            });
-                    } else {
-                        swal("Cancelled!");
-                    }
-
-                });
+                        .then((message) => {
+                            swal("Success", message, "success");
+                            //navigate(`/usermanagement`);
+                            fetchUserData()
+                        })
+                        .catch((error) => {
+                            console.error("PUT request error: ", error);
+                            swal("Error", "Failed to update user data", "error");
+                        });
+                } else {
+                    swal("Cancelled!");
+                }
+            });
         } catch (error) {
             console.error("Error: ", error);
         }
@@ -236,7 +241,7 @@ function UserDetails() {
 
                         <Form.Group as={Row} className="mb-3">
                             <Col sm={{ span: 10, offset: 2 }}>
-                                <Button type="submit" onClick={() => navigate(`/usermanagement`)}>Back to all accounts</Button>
+                                <Button type="button" onClick={() => navigate(`/usermanagement`)}>Back to all accounts</Button>
                             </Col>
                         </Form.Group>
                     </Form>
@@ -300,7 +305,7 @@ function UserDetails() {
 
                         <Form.Group as={Row} className="mb-3">
                             <Col sm={{ span: 10, offset: 2 }}>
-                                <Button type="submit" onClick={() => navigate(`/usermanagement`)}>Back to all accounts</Button>
+                                <Button type="button" onClick={() => navigate(`/usermanagement`)}>Back to all accounts</Button>
                             </Col>
                         </Form.Group>
                     </Form>
@@ -395,14 +400,14 @@ function UserDetails() {
                         </Form.Group>
                         <Form.Group as={Row} className="mb-3">
                             <Col sm={{ span: 10, offset: 2 }}>
-                                {userData.AccountStatus === "Active" ? (
-                                    <Button type="submit" variant="outline-success" onClick={activateAccount}>Activate</Button>
+                                {travelerData.accountStatus === "Active" ? (
+                                    <Button type="button" variant="outline-danger" onClick={deactivateAccount}>Deactivate</Button>
                                 ) : (
-                                    <Button type="submit" variant="outline-danger" onClick={deactivateAccount}>Deactivate</Button>
+                                    <Button type="button" variant="outline-success" onClick={activateAccount}>Activate</Button>
                                 )
                                 }
                                 <br /><br />
-                                <Button type="submit" onClick={() => navigate(`/usermanagement`)}>Back to all accounts</Button>
+                                <Button type="button" onClick={() => navigate(`/usermanagement`)}>Back to all accounts</Button>
                             </Col>
                         </Form.Group>
                     </Form>
