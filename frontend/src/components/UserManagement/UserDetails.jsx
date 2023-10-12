@@ -50,9 +50,51 @@ function UserDetails() {
         hashedPassword: null
     });
 
+    const [sessionData, setSessionData] = useState({});
+    const [userType, setUserType] = useState("");
+
     useEffect(() => {
-        fetchUserData();
+        getSessionData();
+
+        if (userType === "backendOfficeStaff") {
+            fetchUserData();
+        }
     }, [id]);
+
+    async function getSessionData() {
+        const storedSessionData = localStorage.getItem('sessionData');
+        const storedUserTypePermissions = localStorage.getItem('userType');
+        if (storedSessionData && storedUserTypePermissions) {
+          const sessionData = JSON.parse(storedSessionData);
+          const type = JSON.parse(storedUserTypePermissions);
+          setSessionData(sessionData);
+          setUserType(type);
+        } else {
+          // Handle the case where no session data is found in localStorage
+          console.error('Session data not found');    
+          // display an alert and redirect to the login page when user clicks OK
+          swal({
+            title: "Error!",
+            text: "Please login to continue!",
+            icon: "error",
+            button: "OK",
+          }).then(() => {
+            window.location.href = "/employee/login";
+          });
+        }
+
+        if (userType !== "backendOfficeStaff") {
+            // display an alert and redirect to the login page when user clicks OK
+            swal({
+              title: "Error!",
+              text: "You do not have permission to access this page!",
+              icon: "error",
+              button: "OK",
+            }).then(() => {
+              window.location.href = "/employee/login";
+            });
+        }
+      }
 
 
     function deactivateAccount() {

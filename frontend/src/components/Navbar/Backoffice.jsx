@@ -11,6 +11,8 @@ function Backoffice() {
   const handleLogout = () => {
     // clearing session data.
     localStorage.removeItem('sessionData');
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('userType');
     // Redirect to the login page or perform other logout actions.
     window.location.href = "http://localhost:3000/employee/login"; // Redirect to the login page
   };

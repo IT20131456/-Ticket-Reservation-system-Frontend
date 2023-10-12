@@ -6,6 +6,7 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Backoffice from '../Navbar/Backoffice';
 import "./styles.css";
+import swal from 'sweetalert';
 
 // This component is to display all the users to backend office staff
 function AllUserView() {
@@ -40,6 +41,16 @@ function AllUserView() {
       console.error('Session data not found');
       // Set loading to false when data is not found
       setLoading(false); 
+
+      // display an alert and redirect to the login page when user clicks OK
+      swal({
+        title: "Error!",
+        text: "Please login to continue!",
+        icon: "error",
+        button: "OK",
+      }).then(() => {
+        window.location.href = "/employee/login";
+      });
     }
   }
 
