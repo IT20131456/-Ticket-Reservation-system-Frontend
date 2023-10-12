@@ -1,15 +1,24 @@
+/**
+ * File: AllUserView.jsx
+ * Author: IT20125202
+ * Description: This component is responsible for displaying user data to backend office staff.
+ * It displays a list of all staff, travel agents and travelers in separate tabs.
+ * The staff tab also has a button to register a new staff member which is only visible to users with admin permissions.
+ */
+
 import React, { useEffect, useState } from 'react';
-import { useNavigate, Link  } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
-import Backoffice from '../Navbar/Backoffice';
-import "./styles.css";
 import swal from 'sweetalert';
+import Backoffice from '../Navbar/Backoffice';
+import './styles.css';
 
-// This component is to display all the users to backend office staff
 function AllUserView() {
+
+  // State variables
   const [sessionData, setSessionData] = useState({});
   const [loading, setLoading] = useState(true);
   const [staffList, setStaffList] = useState([]);
@@ -17,8 +26,10 @@ function AllUserView() {
   const [travelerList, setTravelerList] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  // Use the useNavigate hook for routing
   const navigate = useNavigate();
 
+  // Fetch user session data and data lists on component load
   useEffect(() => {
     getSessionData();
     fetchStaffData();
@@ -26,6 +37,7 @@ function AllUserView() {
     fetchTravelerData();
   }, []);
 
+  // Function to fetch user session data from localStorage
   async function getSessionData() {
     const storedSessionData = localStorage.getItem('sessionData');
     const storedAdminPermissions = localStorage.getItem('isAdmin');
@@ -42,7 +54,7 @@ function AllUserView() {
       // Set loading to false when data is not found
       setLoading(false); 
 
-      // display an alert and redirect to the login page when user clicks OK
+      // Display an alert and redirect to the login page when user clicks OK
       swal({
         title: "Error!",
         text: "Please login to continue!",
@@ -54,7 +66,7 @@ function AllUserView() {
     }
   }
 
-  // fetch all staff data
+  // Function to retrieve all staff data
   async function fetchStaffData() {
     try {
       const response = await fetch('http://localhost:5041/api/Staff');
@@ -69,7 +81,7 @@ function AllUserView() {
     }
   }
 
-  // fetch all travel agent data
+  // Function to retrieve all travel agent data
   async function fetchTravelAgentData() {
     try {
       const response = await fetch('http://localhost:5041/api/TravelAgent');
@@ -84,7 +96,7 @@ function AllUserView() {
     }
   }
 
-  // get all traveler data
+  // Function to fetch all traveler data
   async function fetchTravelerData() {
     try {
       const response = await fetch('http://localhost:5041/api/Traveler');

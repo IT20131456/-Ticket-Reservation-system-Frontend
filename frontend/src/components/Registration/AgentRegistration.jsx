@@ -1,19 +1,25 @@
+/**
+ * File: AgentRegistration.jsx
+ * Author: IT20125202
+ * Description: This component is responsible for registering new travel agent accounts.
+ */
+
 import React, { useState } from 'react';
 import axios from 'axios';
-import logo from "../../images/logo.png";
-import './style.css'
 import LandningPageNav from '../Navbar/LandningPageNav';
-import { validateAgentForm } from './ValidationUtils';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import swal from 'sweetalert';
+import logo from "../../images/logo.png";
+import './style.css';
+import { validateAgentForm } from './ValidationUtils';
 
-// This component is for the registrations of the travel agents. (travel agents can create their accounts)
 function TravelAgentRegistration() {
 
+    // State variables for form fields and errors
     const [regNo, setRegNo] = useState('');
     const [nic, setNic] = useState('');
     const [name, setName] = useState('');
@@ -23,15 +29,17 @@ function TravelAgentRegistration() {
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
 
+    // Handle form submission
     const onSubmitForm = async (e) => {
         e.preventDefault();
 
         const formData = { regNo, nic, name, email, mobile, username, password };
         const validationErrors = validateAgentForm(formData);
 
+        // Check if there are no validation errors
         if (Object.keys(validationErrors).length === 0) {
             try {
-                // Make a POST request to backend API to create a travel agent account
+                // Make a POST request to create a travel agent account
                 const response = await axios.post('http://localhost:5041/api/TravelAgent', {
                     RegNo: regNo,
                     NIC: nic,
@@ -42,10 +50,7 @@ function TravelAgentRegistration() {
                     HashedPassword: password,
                 });
 
-                // show a success message
-                console.log('Account created successfully', response.data);
-
-                // show an alert and redirect to the login page when user clicks OK
+                // Show a success message and redirect when user clicks OK
                 swal({
                     title: "Success!",
                     text: "Travel agent account created successfully!",

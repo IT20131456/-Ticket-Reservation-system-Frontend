@@ -1,17 +1,24 @@
+/**
+ * File: EmployeeLogin.jsx
+ * Authors: IT20125202, IT20127046
+ * Description: This component is responsible for rendering the login forms for backend staff and travel agents.
+ */
+
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import "./EmployeeLogin.css"; // CSS file for styles 
-import logo from "../../images/logo.png";
 import swal from 'sweetalert';
+import logo from "../../images/logo.png";
+import "./EmployeeLogin.css"; 
 
-// This component renders the login forms for backend staff and travel agents
+
 function EmployeeLogin() {
-
+  // Define state variables for staff and agent login
   const [staffUsername, setStaffUsername] = useState('');
   const [staffPassword, setStaffPassword] = useState('');
   const [agentUsername, setAgentUsername] = useState('');
   const [agentPassword, setAgentPassword] = useState('');
 
+  // Function to send requests to backend API
   function sendRequest(path, data) {
     try {
       const url = 'http://localhost:5041/api' + path;
@@ -21,6 +28,7 @@ function EmployeeLogin() {
     }
   }
 
+  // Handle the staff login form submission
   async function onSubmitBackoffice(e) {
     e.preventDefault();
   
@@ -36,27 +44,27 @@ function EmployeeLogin() {
         console.log('Login successful');
         // Store the session token in localStorage 
         //localStorage.setItem('sessionToken', response.data.sessionToken);
-        // add the data field of the response to the local storage
+
+        // Store session data and type in local storage
         localStorage.setItem('sessionData', JSON.stringify(response.data.data));
         localStorage.setItem('userType', "backendOfficeStaff");
         localStorage.setItem('isAdmin', response.data.data.isAdmin);
 
-        // alert the user that the login was successful and redirect to the back office page once the user clicks OK
+        // Show success alert and redirect
         swal({
           title: "Login Successful",
           text: "You will be redirected to the back office page shortly.",
           icon: "success",
           button: "OK",
         }).then(() => {
-          // Redirect to the back office page
           window.location.href = "/backofficehome";
         });
 
       } else {
-        // Handle unsuccessful login, show an error message, or perform other actions
+        // Handle unsuccessful login and show an error message
         console.error('Login failed:', response);
 
-        // alert the user that the login failed
+        // Show error alert
         swal({
           title: "Login Failed",
           text: "Please check your credentials and try again.",
@@ -68,7 +76,7 @@ function EmployeeLogin() {
       // Handle errors that occur during the request
       console.error('Error during login:', error);
 
-      // alert the user that the login failed
+      // Show error alert for network and other issues
       swal({
         title: "Login Failed",
         text: "Please check your network connection and try again.",
@@ -78,6 +86,7 @@ function EmployeeLogin() {
     }
   }
 
+  // Handle the travel agent login form submission
   async function onSubmitTravelAgent(e) {
     e.preventDefault();
   
@@ -91,11 +100,12 @@ function EmployeeLogin() {
       // Check if the response indicates success 
       if (response && response.status === 200) {
         console.log('Login successful');
-        // Store the session token in localStorage 
-        localStorage.setItem('sessionToken', response.data.sessionToken);
+        // Store the session token and type in local storage 
+        localStorage.setItem('sessionData', JSON.stringify(response.data.data));
         localStorage.setItem('userType', "travelAgent");
+        localStorage.setItem('isAdmin', false);
 
-        // alert the user that the login was successful and redirect to the travel agent page once the user clicks OK
+        // Show success alert and redirect
         swal({
           title: "Login Successful",
           text: "You will be redirected to the travel agent page shortly.",
@@ -107,10 +117,10 @@ function EmployeeLogin() {
         });
 
       } else {
-        // Handle unsuccessful login, show an error message
+        // Handle unsuccessful login and show an error message
         console.error('Login failed:', response);
 
-        // alert the user that the login failed
+        // Show error alert
         swal({
           title: "Login Failed",
           text: "Please check your credentials and try again.",
@@ -122,7 +132,7 @@ function EmployeeLogin() {
       // Handle errors that occur during the request 
       console.error('Error during login:', error);
 
-      // alert the user that the login failed
+      // Show error alert for network or other issues
       swal({
         title: "Login Failed",
         text: "Please check your network connection and try again.",
