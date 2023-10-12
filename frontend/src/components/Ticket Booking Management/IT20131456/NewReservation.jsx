@@ -4,13 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faTrainSubway,faCoins,faCircleCheck, faPersonWalkingLuggage, faCircleXmark,} from "@fortawesome/free-solid-svg-icons";
 import TravelAgentNavBar from "../../Navbar/Travel Agent";
 import { getCurrentDate, getFormattedDates,} from "./Validations/DateValidations";
-import { validateNIC } from "./Validations/NicValidation";
 import { calculateTotalPrice } from "./Validations/TicketPriceValidation";
 import axios from "axios";
 import "./styles.css";
 import swal from "sweetalert";
 
 export default function NewReservations() {
+  const [booking_details, setBookingDetails] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
@@ -30,16 +30,53 @@ export default function NewReservations() {
   const [fromValidateSuccess, setfromValidateSuccess] = useState("");
   const [validateAlert, setValidateAlert] = useState(false);
   const [validateAlertSuccess, setValidateAlertSuccess] = useState(false);
-  
 
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5041/api/TicketBooking`)
+      .then((response) => {
+        setBookingDetails(response.data);
+        // Extract and display all reference IDs
+        const referenceIds = response.data.map((item) => item.reference_id);
+        // console.log(referenceIds);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  }, []);
+  
   const onSubmitNIC = () => {
-    const { success: successMessage, error: errorMessage } = validateNIC(
-      parseInt(enteredNIC, 10)
-    );
-    setSuccess(successMessage);
-    setError(errorMessage);
-    setIsInputGroupDisabled(errorMessage ? true : false);
+    const enteredNICNumber = parseInt(enteredNIC, 10); // Parse enteredNIC to a number
+  
+    const referenceIds = booking_details.map((item) => parseInt(item.reference_id, 10));
+    console.log(referenceIds.length);
+  
+    // Count the occurrences of enteredNICNumber in referenceIds
+    const countOfEnteredNIC = referenceIds.filter(id => id === enteredNICNumber).length;
+  
+    // Check both conditions
+    if (countOfEnteredNIC < 4 && referenceIds.includes(enteredNICNumber)) {     
+      setSuccess("NIC Validated Successfully");
+      setError("");
+      setIsInputGroupDisabled(false);
+    } else if (countOfEnteredNIC >= 4) {
+      // Entered NIC found 4 or more times in Database
+      setSuccess("");
+      setError("Already User Booked 4 Reservations");
+      setIsInputGroupDisabled(true);
+    } else {
+      // User Not Found or Entered NIC Not Matching Reference IDs
+      setSuccess("");
+      setError("User Not Found In Database");
+      setIsInputGroupDisabled(true);
+    }
   };
+  
+  
+  
+  
+  
+  
 
   const currentDate = getCurrentDate();
   const { formattedCurrentDate, formattedMinDate, formattedMaxDate } =

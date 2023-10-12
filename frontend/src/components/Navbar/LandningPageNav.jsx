@@ -32,10 +32,10 @@ function LandningPageNav() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
+            {/* <Nav.Link href="#action1">Home</Nav.Link>
             <Nav.Link href="#action1">Ticket Booking</Nav.Link>
             <Nav.Link href="#action1">Contact Us</Nav.Link>
-            <Nav.Link href="#action1">About Us</Nav.Link>
+            <Nav.Link href="#action1">About Us</Nav.Link> */}
             
           </Nav>
           
