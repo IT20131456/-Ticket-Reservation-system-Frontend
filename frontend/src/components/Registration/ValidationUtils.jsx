@@ -1,5 +1,11 @@
-// validationUtils.js
+/** 
+ * File: ValidationUtils.js
+ * Author: IT20125202
+ * Description: This file contains functions for validating agent and staff registration form data.
+ * Parameters: formData - an object containing the form data to be validated
+ */
 
+// Function to validate agent registration form data
 export const validateAgentForm = (formData) => {
     const errors = {};
 
@@ -44,6 +50,7 @@ export const validateAgentForm = (formData) => {
     return errors;
 };
 
+// Function to validate staff registration form data
 export const validateStaffForm = (formData) => {
     const errors = {};
 

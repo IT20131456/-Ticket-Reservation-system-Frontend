@@ -1,18 +1,26 @@
+/**
+ * File: OfficeStaffRegistration.jsx
+ * Author: IT20125202
+ * Description: This component is responsible for registering new staff accounts.
+ * It is only accessible to users with admin permissions.
+ */
+
 import React, { useState } from 'react';
 import axios from 'axios';
-import logo from "../../images/logo.png";
+import swal from 'sweetalert';
 import BackOfficeNavBar from "../Navbar/Backoffice";
-import './style.css'
-import { validateStaffForm } from './ValidationUtils';
 import Alert from 'react-bootstrap/Alert';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
-import swal from 'sweetalert';
+import logo from "../../images/logo.png";
+import './style.css';
+import { validateStaffForm } from './ValidationUtils';
 
-// This component is for the registrations of the backend staff. 
 function BackOfficeStaffRegistration() {
+
+    // State variables for form fields and validation errors
     const [empId, setEmpId] = useState('');
     const [nic, setNic] = useState('');
     const [name, setName] = useState('');
@@ -23,14 +31,20 @@ function BackOfficeStaffRegistration() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [errors, setErrors] = useState({});
 
+    // Handler for form submission
     const onSubmitForm = async (e) => {
         e.preventDefault();
 
+        // Create an object with form data for validation
         const formData = { empId, nic, name, email, mobile, username, password };
+
+        // Validate form data and get validation errors
         const validationErrors = validateStaffForm(formData);
 
+        // Check if there are no validation errors
         if (Object.keys(validationErrors).length === 0) {
 
+            // Create a new staff member object
             const newStaff = {
                 StaffId: empId,
                 NIC: nic,
@@ -44,12 +58,11 @@ function BackOfficeStaffRegistration() {
             console.log(newStaff);
 
             try {
-                // Make a POST request to backend API
+                // Make a POST request to create a new staff account
                 const response = await axios.post('http://localhost:5041/api/Staff', newStaff);
 
-                // redirect or show a success message
+                // Handle success, show an alert, and redirect
                 console.log('Account created successfully', response.data);
-                // show an alert and redirect to the back office home page when user clicks OK
                 swal({
                     title: "Success!",
                     text: "Staff account created successfully!",
@@ -59,7 +72,7 @@ function BackOfficeStaffRegistration() {
                     window.location.href = "/usermanagement";
                 });
             } catch (error) {
-                // Handle errors
+                // Handle errors, show an alert
                 console.error('Error creating account:', error);
                 swal({
                     title: "Error!",
