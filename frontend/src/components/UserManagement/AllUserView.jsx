@@ -1,19 +1,21 @@
-// This page will display all the users to backend office staff
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link  } from 'react-router-dom';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Backoffice from '../Navbar/Backoffice';
 import "./styles.css";
+import swal from 'sweetalert';
 
+// This component is to display all the users to backend office staff
 function AllUserView() {
   const [sessionData, setSessionData] = useState({});
   const [loading, setLoading] = useState(true);
   const [staffList, setStaffList] = useState([]);
   const [travelAgentList, setTravelAgentList] = useState([]);
   const [travelerList, setTravelerList] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,17 +28,33 @@ function AllUserView() {
 
   async function getSessionData() {
     const storedSessionData = localStorage.getItem('sessionData');
-    if (storedSessionData) {
+    const storedAdminPermissions = localStorage.getItem('isAdmin');
+    if (storedSessionData && storedAdminPermissions) {
       const sessionData = JSON.parse(storedSessionData);
+      const isAdmin = JSON.parse(storedAdminPermissions);
       setSessionData(sessionData);
-      setLoading(false); // Set loading to false when data is available
+      setIsAdmin(isAdmin);
+      // Set loading to false when data is available
+      setLoading(false); 
     } else {
       // Handle the case where no session data is found in localStorage
       console.error('Session data not found');
-      setLoading(false); // Set loading to false when data is not found
+      // Set loading to false when data is not found
+      setLoading(false); 
+
+      // display an alert and redirect to the login page when user clicks OK
+      swal({
+        title: "Error!",
+        text: "Please login to continue!",
+        icon: "error",
+        button: "OK",
+      }).then(() => {
+        window.location.href = "/employee/login";
+      });
     }
   }
 
+  // fetch all staff data
   async function fetchStaffData() {
     try {
       const response = await fetch('http://localhost:5041/api/Staff');
@@ -51,6 +69,7 @@ function AllUserView() {
     }
   }
 
+  // fetch all travel agent data
   async function fetchTravelAgentData() {
     try {
       const response = await fetch('http://localhost:5041/api/TravelAgent');
@@ -65,6 +84,7 @@ function AllUserView() {
     }
   }
 
+  // get all traveler data
   async function fetchTravelerData() {
     try {
       const response = await fetch('http://localhost:5041/api/Traveler');
@@ -88,6 +108,14 @@ function AllUserView() {
         ) : (
           <div>
             <h1 style={{ textAlign: 'center', color: '#191970' }}>All Accounts</h1>
+
+            {/* show link to register new staff only if the current user has admin permissions */}
+            {isAdmin && (
+              <Link to="/backoffice/registration">
+                <Button variant="primary">Register New Staff Member</Button>
+              </Link>
+            )}
+            <br /><br />
             <Tabs defaultActiveKey="staff" id="user-tabs">
               <Tab eventKey="staff" title="Staff">
                 <Table bordered hover responsive>

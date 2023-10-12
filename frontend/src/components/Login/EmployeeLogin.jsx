@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import "./EmployeeLogin.css"; // Import the CSS file for styles (create LoginPanel.css).
+import "./EmployeeLogin.css"; // CSS file for styles 
 import logo from "../../images/logo.png";
+import swal from 'sweetalert';
 
+// This component renders the login forms for backend staff and travel agents
 function EmployeeLogin() {
 
   const [staffUsername, setStaffUsername] = useState('');
@@ -29,7 +31,7 @@ function EmployeeLogin() {
         Password: staffPassword,
       });
   
-      // Check if the response indicates success (adjust this based on API response structure)
+      // Check if the response indicates success
       if (response && response.status === 200) {
         console.log('Login successful');
         // Store the session token in localStorage 
@@ -37,19 +39,44 @@ function EmployeeLogin() {
         // add the data field of the response to the local storage
         localStorage.setItem('sessionData', JSON.stringify(response.data.data));
         localStorage.setItem('userType', "backendOfficeStaff");
+        localStorage.setItem('isAdmin', response.data.data.isAdmin);
 
-        // Redirect to the back office page
-        window.location.href = "/backofficehome";
+        // alert the user that the login was successful and redirect to the back office page once the user clicks OK
+        swal({
+          title: "Login Successful",
+          text: "You will be redirected to the back office page shortly.",
+          icon: "success",
+          button: "OK",
+        }).then(() => {
+          // Redirect to the back office page
+          window.location.href = "/backofficehome";
+        });
+
       } else {
         // Handle unsuccessful login, show an error message, or perform other actions
         console.error('Login failed:', response);
+
+        // alert the user that the login failed
+        swal({
+          title: "Login Failed",
+          text: "Please check your credentials and try again.",
+          icon: "error",
+          button: "OK",
+        });
       }
     } catch (error) {
-      // Handle errors that occur during the request (e.g., network error)
+      // Handle errors that occur during the request
       console.error('Error during login:', error);
+
+      // alert the user that the login failed
+      swal({
+        title: "Login Failed",
+        text: "Please check your network connection and try again.",
+        icon: "error",
+        button: "OK",
+      });
     }
   }
-  
 
   async function onSubmitTravelAgent(e) {
     e.preventDefault();
@@ -57,25 +84,51 @@ function EmployeeLogin() {
     try {
       // Send the request and await the response
       const response = await sendRequest('/TravelAgent/login', {
-        UserName: agentUsername,
-        HashedPassword: agentPassword,
+        Id: agentUsername,
+        Password: agentPassword,
       });
   
-      // Check if the response indicates success (need to adjust this based on your API response structure)
+      // Check if the response indicates success 
       if (response && response.status === 200) {
         console.log('Login successful');
-        // Store the session token in localStorage (you can also use cookies)
+        // Store the session token in localStorage 
         localStorage.setItem('sessionToken', response.data.sessionToken);
         localStorage.setItem('userType', "travelAgent");
-        // Redirect to the travel agent page
-        window.location.href = "/travelagenthome";
+
+        // alert the user that the login was successful and redirect to the travel agent page once the user clicks OK
+        swal({
+          title: "Login Successful",
+          text: "You will be redirected to the travel agent page shortly.",
+          icon: "success",
+          button: "OK",
+        }).then(() => {
+          // Redirect to the travel agent page
+          window.location.href = "/travelagenthome";
+        });
+
       } else {
-        // Handle unsuccessful login, show an error message, or perform other actions
+        // Handle unsuccessful login, show an error message
         console.error('Login failed:', response);
+
+        // alert the user that the login failed
+        swal({
+          title: "Login Failed",
+          text: "Please check your credentials and try again.",
+          icon: "error",
+          button: "OK",
+        });
       }
     } catch (error) {
-      // Handle errors that occur during the request (e.g., network error)
+      // Handle errors that occur during the request 
       console.error('Error during login:', error);
+
+      // alert the user that the login failed
+      swal({
+        title: "Login Failed",
+        text: "Please check your network connection and try again.",
+        icon: "error",
+        button: "OK",
+      });
     }
   }
     
