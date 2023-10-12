@@ -82,6 +82,7 @@ function TravelerManagement() {
 
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
     const nicPattern = /^[0-9]{9}[Vv]$/;
+    // const nicPattern = /^[0-9]{13}$/;
 
     // Validate form data here
     if (
@@ -189,9 +190,9 @@ function TravelerManagement() {
         console.error("Request failed:", response.statusText);
         // alert("Request failed:", response.statusText);
         Swal.fire({
-          icon: 'error',
-          title: 'Request Failed',
-          text: response.statusText
+          icon: "error",
+          title: "Request Failed",
+          text: response.statusText,
         });
       }
     } catch (error) {
@@ -228,7 +229,7 @@ function TravelerManagement() {
             <div className={styles.signup_form_container}>
               <div className={styles.left}>
                 <h5>Manage Travelers</h5>
-                <Link to="/user/login">
+                <Link to="/travelerprofiles">
                   <button type="button" className={styles.white_btn}>
                     Travelers
                   </button>
@@ -237,7 +238,11 @@ function TravelerManagement() {
               <div className={styles.right}>
                 <form className={styles.form_container}>
                   <h3>
-                    <strong>Register Traveler</strong>
+                    <strong>
+                      {" "}
+                      <i class="fa fa-user-circle"></i>&nbsp;&nbsp;Register
+                      Traveler
+                    </strong>
                   </h3>
 
                   <input

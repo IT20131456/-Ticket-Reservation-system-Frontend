@@ -1,9 +1,11 @@
-// to handle travel agent registration - travel agents can create accounts
 import React, { useState } from 'react';
 import axios from 'axios'; 
 import logo from "../../images/logo.png";
-//import BackOfficeNavBar from "../Navbar/Backoffice";
+import './style.css'
+import LandningPageNav from '../Navbar/LandningPageNav';
 
+// This component is for the registrations of the travel agents. (travel agents can create their accounts)
+// TODO: Add validations
 function TravelAgentRegistration() {
 
     const [regNo, setRegNo] = useState('');
@@ -18,7 +20,7 @@ function TravelAgentRegistration() {
         e.preventDefault();
 
         try {
-            // Make a POST request to backend API
+            // Make a POST request to backend API to create a travel agent account
             const response = await axios.post('http://localhost:5041/api/TravelAgent', {
                 RegNo: regNo,
                 NIC: nic,
@@ -29,32 +31,33 @@ function TravelAgentRegistration() {
                 HashedPassword: password,
             });
 
-            // TODO: Handle the response, e.g., redirect or show a success message
+            // TODO: show a success message
             console.log('Account created successfully', response.data);
 
             // Redirect to the back office page
             window.location.href = "/employee/login";
         } catch (error) {
-            // TODO: Handle errors, e.g., show an error message
+            // TODO: show an error message
             console.error('Error creating account:', error);
         }
     };
 
     return (
         <div>
-            <div className="login-panel-bg">
-                <div className="login-panel">
-                    <div className="login-container">
+            <LandningPageNav />
+            <div className="reg-panel-bg">
+                <div className="reg-panel">
+                    <div className="reg-container">
                         <div className="logo-container">
                             <img src={logo} alt="Logo" width={200} height={100} />
                         </div>
-                        <div className="login-form">
+                        <div className="reg-form">
                             <div className="section">
-                                <h4>Staff Account Creation</h4>
+                                <h4 style={{ textAlign: 'center', color: '#191970' }}>Travel Agent Registration</h4>
                                 <div className="divider"></div>
                                 <form onSubmit={onSubmitForm}>
                                     <div className="input-group">
-                                        <label htmlFor="back-office-reg-no">Register Number</label>
+                                        <label htmlFor="back-office-reg-no">Register Number<br /></label><br />
                                         <input
                                             type="text"
                                             id="back-office-reg-no"
@@ -117,7 +120,7 @@ function TravelAgentRegistration() {
                                         />
                                     </div>
                                     <p />
-                                    <button className="login-button" type="submit">
+                                    <button className="reg-button" type="submit">
                                         Create Account
                                     </button>
                                 </form>
