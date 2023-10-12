@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link  } from 'react-router-dom';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
 import Table from 'react-bootstrap/Table';
@@ -14,6 +14,7 @@ function AllUserView() {
   const [staffList, setStaffList] = useState([]);
   const [travelAgentList, setTravelAgentList] = useState([]);
   const [travelerList, setTravelerList] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,9 +27,12 @@ function AllUserView() {
 
   async function getSessionData() {
     const storedSessionData = localStorage.getItem('sessionData');
-    if (storedSessionData) {
+    const storedAdminPermissions = localStorage.getItem('isAdmin');
+    if (storedSessionData && storedAdminPermissions) {
       const sessionData = JSON.parse(storedSessionData);
+      const isAdmin = JSON.parse(storedAdminPermissions);
       setSessionData(sessionData);
+      setIsAdmin(isAdmin);
       // Set loading to false when data is available
       setLoading(false); 
     } else {
@@ -93,6 +97,14 @@ function AllUserView() {
         ) : (
           <div>
             <h1 style={{ textAlign: 'center', color: '#191970' }}>All Accounts</h1>
+
+            {/* show link to register new staff only if the current user has admin permissions */}
+            {isAdmin && (
+              <Link to="/backoffice/registration">
+                <Button variant="primary">Register New Staff Member</Button>
+              </Link>
+            )}
+            <br /><br />
             <Tabs defaultActiveKey="staff" id="user-tabs">
               <Tab eventKey="staff" title="Staff">
                 <Table bordered hover responsive>

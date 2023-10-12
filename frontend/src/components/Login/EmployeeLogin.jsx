@@ -39,6 +39,7 @@ function EmployeeLogin() {
         // add the data field of the response to the local storage
         localStorage.setItem('sessionData', JSON.stringify(response.data.data));
         localStorage.setItem('userType', "backendOfficeStaff");
+        localStorage.setItem('isAdmin', response.data.data.isAdmin);
 
         // alert the user that the login was successful and redirect to the back office page once the user clicks OK
         swal({
