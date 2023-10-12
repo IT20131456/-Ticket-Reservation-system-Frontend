@@ -4,6 +4,8 @@ import logo from "../../images/logo.png";
 import BackOfficeNavBar from "../Navbar/Backoffice";
 import './style.css'
 
+// This component is for the registrations of the backend staff. 
+// TODO: Add validations
 function BackOfficeStaffRegistration() {
     const [empId, setEmpId] = useState('');
     const [nic, setNic] = useState('');

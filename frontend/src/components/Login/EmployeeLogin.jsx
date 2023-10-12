@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import "./EmployeeLogin.css"; // Import the CSS file for styles (create LoginPanel.css).
+import "./EmployeeLogin.css"; // CSS file for styles 
 import logo from "../../images/logo.png";
 
+// This component renders the login forms for backend staff and travel agents
 function EmployeeLogin() {
 
   const [staffUsername, setStaffUsername] = useState('');
@@ -29,7 +30,7 @@ function EmployeeLogin() {
         Password: staffPassword,
       });
   
-      // Check if the response indicates success (adjust this based on API response structure)
+      // Check if the response indicates success
       if (response && response.status === 200) {
         console.log('Login successful');
         // Store the session token in localStorage 
@@ -45,7 +46,7 @@ function EmployeeLogin() {
         console.error('Login failed:', response);
       }
     } catch (error) {
-      // Handle errors that occur during the request (e.g., network error)
+      // Handle errors that occur during the request
       console.error('Error during login:', error);
     }
   }
@@ -61,20 +62,20 @@ function EmployeeLogin() {
         HashedPassword: agentPassword,
       });
   
-      // Check if the response indicates success (need to adjust this based on your API response structure)
+      // Check if the response indicates success 
       if (response && response.status === 200) {
         console.log('Login successful');
-        // Store the session token in localStorage (you can also use cookies)
+        // Store the session token in localStorage 
         localStorage.setItem('sessionToken', response.data.sessionToken);
         localStorage.setItem('userType', "travelAgent");
         // Redirect to the travel agent page
         window.location.href = "/travelagenthome";
       } else {
-        // Handle unsuccessful login, show an error message, or perform other actions
+        // Handle unsuccessful login, show an error message
         console.error('Login failed:', response);
       }
     } catch (error) {
-      // Handle errors that occur during the request (e.g., network error)
+      // Handle errors that occur during the request 
       console.error('Error during login:', error);
     }
   }

@@ -1,4 +1,3 @@
-// This page will display all the users to backend office staff
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Tab from 'react-bootstrap/Tab';
@@ -8,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Backoffice from '../Navbar/Backoffice';
 import "./styles.css";
 
+// This component is to display all the users to backend office staff
 function AllUserView() {
   const [sessionData, setSessionData] = useState({});
   const [loading, setLoading] = useState(true);
@@ -29,14 +29,17 @@ function AllUserView() {
     if (storedSessionData) {
       const sessionData = JSON.parse(storedSessionData);
       setSessionData(sessionData);
-      setLoading(false); // Set loading to false when data is available
+      // Set loading to false when data is available
+      setLoading(false); 
     } else {
       // Handle the case where no session data is found in localStorage
       console.error('Session data not found');
-      setLoading(false); // Set loading to false when data is not found
+      // Set loading to false when data is not found
+      setLoading(false); 
     }
   }
 
+  // fetch all staff data
   async function fetchStaffData() {
     try {
       const response = await fetch('http://localhost:5041/api/Staff');
@@ -51,6 +54,7 @@ function AllUserView() {
     }
   }
 
+  // fetch all travel agent data
   async function fetchTravelAgentData() {
     try {
       const response = await fetch('http://localhost:5041/api/TravelAgent');
@@ -65,6 +69,7 @@ function AllUserView() {
     }
   }
 
+  // get all traveler data
   async function fetchTravelerData() {
     try {
       const response = await fetch('http://localhost:5041/api/Traveler');

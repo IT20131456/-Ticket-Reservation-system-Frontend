@@ -1,11 +1,11 @@
-// to handle travel agent registration - travel agents can create accounts
 import React, { useState } from 'react';
 import axios from 'axios'; 
 import logo from "../../images/logo.png";
 import './style.css'
 import LandningPageNav from '../Navbar/LandningPageNav';
-//import BackOfficeNavBar from "../Navbar/Backoffice";
 
+// This component is for the registrations of the travel agents. (travel agents can create their accounts)
+// TODO: Add validations
 function TravelAgentRegistration() {
 
     const [regNo, setRegNo] = useState('');
@@ -20,7 +20,7 @@ function TravelAgentRegistration() {
         e.preventDefault();
 
         try {
-            // Make a POST request to backend API
+            // Make a POST request to backend API to create a travel agent account
             const response = await axios.post('http://localhost:5041/api/TravelAgent', {
                 RegNo: regNo,
                 NIC: nic,
@@ -31,13 +31,13 @@ function TravelAgentRegistration() {
                 HashedPassword: password,
             });
 
-            // TODO: Handle the response, e.g., redirect or show a success message
+            // TODO: show a success message
             console.log('Account created successfully', response.data);
 
             // Redirect to the back office page
             window.location.href = "/employee/login";
         } catch (error) {
-            // TODO: Handle errors, e.g., show an error message
+            // TODO: show an error message
             console.error('Error creating account:', error);
         }
     };
