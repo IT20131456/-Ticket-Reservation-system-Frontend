@@ -4,17 +4,15 @@ import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
-import logo from "../../images/logo.png";
+import logo from "../../../images/logo.png";
 
 function TravelAgent() {
 
   const handleLogout = () => {
     // clearing session data.
     localStorage.removeItem('sessionData');
-    localStorage.removeItem('isAdmin');
-    localStorage.removeItem('userType');
     // Redirect to the login page or perform other logout actions.
-    window.location.href = "http://localhost:3000/employee/login"; // Redirect to the login page
+    window.location.href = "employee/login"; // Redirect to the login page
   };
 
   return (
@@ -56,16 +54,7 @@ function TravelAgent() {
             <Nav.Link href="#" disabled>
               Link
             </Nav.Link>
-          </Nav>
-          <Form className="d-flex" style={{ marginRight: "50px" }}>
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-            />
-            <Button variant="success">Search</Button>
-          </Form>
+          </Nav>         
           <label>Travel Agent</label>&nbsp;&nbsp;
           <Form className="d-flex">
             <img

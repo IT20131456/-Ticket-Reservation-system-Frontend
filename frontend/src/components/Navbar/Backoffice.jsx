@@ -7,6 +7,16 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import logo from "../../images/logo.png";
 
 function Backoffice() {
+
+  const handleLogout = () => {
+    // clearing session data.
+    localStorage.removeItem('sessionData');
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('userType');
+    // Redirect to the login page or perform other logout actions.
+    window.location.href = "http://localhost:3000/employee/login"; // Redirect to the login page
+  };
+
   return (
     <Navbar
       bg="light"
@@ -32,9 +42,16 @@ function Backoffice() {
             navbarScroll
           >
             <Nav.Link href="#action1">Home</Nav.Link>
+
+            <Nav.Link href="/traveler">Travelers</Nav.Link>
+        
+           
+
             <Nav.Link href="/trainschedule/view">Train Schedule</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
+            <Nav.Link href="/usermanagement">Users</Nav.Link>
+            <NavDropdown title="Bookings" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
+
               <NavDropdown.Item href="#action4">
                 Another action
               </NavDropdown.Item>
@@ -44,7 +61,7 @@ function Backoffice() {
               </NavDropdown.Item>
             </NavDropdown>
             <Nav.Link href="#" disabled>
-              Link
+              Passenager
             </Nav.Link>
           </Nav>
           <Form className="d-flex" style={{ marginRight: "65px" }}>
@@ -67,6 +84,8 @@ function Backoffice() {
             />
             &nbsp;&nbsp;
           </Form>
+
+          <Button variant="outline-primary" onClick={handleLogout}>Logout</Button>
         </Navbar.Collapse>
       </Container>
     </Navbar>
