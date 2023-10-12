@@ -62,7 +62,7 @@ export default function NewReservations() {
     } else if (countOfEnteredNIC >= 4) {
       // Entered NIC found 4 or more times in Database
       setSuccess("");
-      setError("User found with the same ID 4 or more times in the database");
+      setError("Already User Booked 4 Reservations");
       setIsInputGroupDisabled(true);
     } else {
       // User Not Found or Entered NIC Not Matching Reference IDs
