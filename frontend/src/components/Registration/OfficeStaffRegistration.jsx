@@ -101,7 +101,7 @@ function BackOfficeStaffRegistration() {
                             Staff ID
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={empId} onChange={(e) => setEmpId(e.target.value)} />
+                            <Form.Control type="text" value={empId} onChange={(e) => setEmpId(e.target.value)} placeholder="Staff ID Number (Ex. 001)" />
                             {errors.empId &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.empId}
@@ -113,7 +113,7 @@ function BackOfficeStaffRegistration() {
                             NIC
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={nic} onChange={(e) => setNic(e.target.value)} />
+                            <Form.Control type="text" value={nic} onChange={(e) => setNic(e.target.value)} placeholder="NIC Number (Ex. 123456789v or 199012345678)" />
                             {errors.nic &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.nic}
@@ -125,7 +125,7 @@ function BackOfficeStaffRegistration() {
                             Name
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} />
+                            <Form.Control type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Full Name" />
                             {errors.name &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.name}
@@ -137,7 +137,7 @@ function BackOfficeStaffRegistration() {
                             Email
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <Form.Control type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                             {errors.email &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.email}
@@ -149,7 +149,7 @@ function BackOfficeStaffRegistration() {
                             Mobile Number
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={mobile} onChange={(e) => setMobile(e.target.value)} />
+                            <Form.Control type="text" value={mobile} onChange={(e) => setMobile(e.target.value)} placeholder="Mobile Number (Ex. 0771234567 or +94771234567)" />
                             {errors.mobile &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.mobile}
@@ -161,7 +161,7 @@ function BackOfficeStaffRegistration() {
                             Username
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
+                            <Form.Control type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
                             {errors.username &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.username}
@@ -173,7 +173,7 @@ function BackOfficeStaffRegistration() {
                             Password
                         </Form.Label>
                         <Col sm={10}>
-                            <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <Form.Control type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                             {errors.password &&
                                 <Alert key='danger' variant='danger'>
                                     {errors.password}
