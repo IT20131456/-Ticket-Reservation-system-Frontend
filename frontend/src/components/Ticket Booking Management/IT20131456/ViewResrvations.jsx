@@ -17,6 +17,7 @@ export default function ViewResrvations() {
   const [filteredResults, setFilteredResults] = useState([]);
   const [searchInput, setSearchInput] = useState("");
 
+//Retrive data from the database
   useEffect(() => {
     axios
       .get(`http://localhost:5041/api/TicketBooking`)
@@ -28,6 +29,7 @@ export default function ViewResrvations() {
       });
   }, []);
 
+  //Function to check the reservation date is within 5 days from the booking date
   const isActionButtonDisabled = (reservationDate) => {
     const currentDate = new Date();
     const formattedReservationDate = new Date(reservationDate);
@@ -63,6 +65,7 @@ export default function ViewResrvations() {
     });
   };
 
+  //Search booking details
   const searchItems = (searchValue) => {
     setSearchInput(searchValue);
     if (searchInput !== "") {

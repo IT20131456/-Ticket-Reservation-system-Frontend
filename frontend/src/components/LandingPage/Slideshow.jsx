@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Slideshow.css'; // Import the CSS file for styles (create Slideshow.css).
+import swal from 'sweetalert';
 
 const Slideshow = () => {
     const images = [
@@ -26,6 +27,35 @@ const Slideshow = () => {
     // Clear the interval when the component unmounts to prevent memory leaks.
     return () => clearInterval(interval);
   }, []);
+  const handleSignupClick = () => {
+    // Display SweetAlert message on signup button click
+    swal("Choose Your Role", "Sign Up as a Travel Agent or Back Office Staff?",  {
+      buttons: {
+        redirectEmployee: {
+          text: "Travel Agent",
+          value: "travelagent",
+        },
+        redirectTravelAgent: {
+          text: "Back Office",
+          value: "backoffice",
+        },
+      },
+    }).then((value) => {
+      // Redirect based on the button clicked
+      switch (value) {
+        case "travelagent":
+          window.location.href = "/travelagent/registration";
+          break;
+        case "backoffice":
+          window.location.href = "/backoffice/registration";
+          break;
+        default:
+          // Handle other cases if needed
+          break;
+      }
+    });
+  };
+
 
   return (
     <div className="slideshow-container">
@@ -41,10 +71,9 @@ const Slideshow = () => {
               <p style={{ fontSize: '22px' }}>Book Your Tickets Now!</p>
               <Link to="/employee/login">
                 <button style={{ margin: '10px' }}>Login</button>
-              </Link>
-              <Link to="/login">
-                <button style={{ margin: '10px' }}>Signup</button>
-              </Link>
+              </Link>              
+                <button style={{ margin: '10px' }}   onClick={handleSignupClick}>Signup</button>
+           
             </div>
           </div>
         ))}
