@@ -11,8 +11,10 @@ function Backoffice() {
   const handleLogout = () => {
     // clearing session data.
     localStorage.removeItem('sessionData');
+    localStorage.removeItem('isAdmin');
+    localStorage.removeItem('userType');
     // Redirect to the login page or perform other logout actions.
-    window.location.href = "employee/login"; // Redirect to the login page
+    window.location.href = "http://localhost:3000/employee/login"; // Redirect to the login page
   };
 
   return (
@@ -46,6 +48,7 @@ function Backoffice() {
            
 
             <Nav.Link href="/trainschedule/view">Train Schedule</Nav.Link>
+            <Nav.Link href="/usermanagement">Users</Nav.Link>
             <NavDropdown title="Bookings" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
 

@@ -1,15 +1,24 @@
+/**
+ * File: EmployeeLogin.jsx
+ * Authors: IT20125202, IT20127046
+ * Description: This component is responsible for rendering the login forms for backend staff and travel agents.
+ */
+
 import React, { useState } from 'react';
 import axios from 'axios'; 
-import "./EmployeeLogin.css"; // Import the CSS file for styles (create LoginPanel.css).
+import swal from 'sweetalert';
 import logo from "../../images/logo.png";
+import "./EmployeeLogin.css"; 
+
 
 function EmployeeLogin() {
-
+  // Define state variables for staff and agent login
   const [staffUsername, setStaffUsername] = useState('');
   const [staffPassword, setStaffPassword] = useState('');
   const [agentUsername, setAgentUsername] = useState('');
   const [agentPassword, setAgentPassword] = useState('');
 
+  // Function to send requests to backend API
   function sendRequest(path, data) {
     try {
       const url = 'http://localhost:5041/api' + path;
@@ -19,6 +28,7 @@ function EmployeeLogin() {
     }
   }
 
+  // Handle the staff login form submission
   async function onSubmitBackoffice(e) {
     e.preventDefault();
   
@@ -29,53 +39,106 @@ function EmployeeLogin() {
         Password: staffPassword,
       });
   
-      // Check if the response indicates success (adjust this based on API response structure)
+      // Check if the response indicates success
       if (response && response.status === 200) {
         console.log('Login successful');
         // Store the session token in localStorage 
         //localStorage.setItem('sessionToken', response.data.sessionToken);
-        // add the data field of the response to the local storage
+
+        // Store session data and type in local storage
         localStorage.setItem('sessionData', JSON.stringify(response.data.data));
         localStorage.setItem('userType', "backendOfficeStaff");
+        localStorage.setItem('isAdmin', response.data.data.isAdmin);
 
-        // Redirect to the back office page
-        window.location.href = "/backoffice";
+        // Show success alert and redirect
+        swal({
+          title: "Login Successful",
+          text: "You will be redirected to the back office page shortly.",
+          icon: "success",
+          button: "OK",
+        }).then(() => {
+          window.location.href = "/backofficehome";
+        });
+
       } else {
-        // Handle unsuccessful login, show an error message, or perform other actions
+        // Handle unsuccessful login and show an error message
         console.error('Login failed:', response);
+
+        // Show error alert
+        swal({
+          title: "Login Failed",
+          text: "Please check your credentials and try again.",
+          icon: "error",
+          button: "OK",
+        });
       }
     } catch (error) {
-      // Handle errors that occur during the request (e.g., network error)
+      // Handle errors that occur during the request
       console.error('Error during login:', error);
+
+      // Show error alert for network and other issues
+      swal({
+        title: "Login Failed",
+        text: "Please check your network connection and try again.",
+        icon: "error",
+        button: "OK",
+      });
     }
   }
-  
 
+  // Handle the travel agent login form submission
   async function onSubmitTravelAgent(e) {
     e.preventDefault();
   
     try {
       // Send the request and await the response
       const response = await sendRequest('/TravelAgent/login', {
-        UserName: agentUsername,
-        HashedPassword: agentPassword,
+        Id: agentUsername,
+        Password: agentPassword,
       });
   
-      // Check if the response indicates success (need to adjust this based on your API response structure)
+      // Check if the response indicates success 
       if (response && response.status === 200) {
         console.log('Login successful');
-        // Store the session token in localStorage (you can also use cookies)
-        localStorage.setItem('sessionToken', response.data.sessionToken);
+        // Store the session token and type in local storage 
+        localStorage.setItem('sessionData', JSON.stringify(response.data.data));
         localStorage.setItem('userType', "travelAgent");
-        // Redirect to the travel agent page
-        window.location.href = "/travelagent";
+        localStorage.setItem('isAdmin', false);
+
+        // Show success alert and redirect
+        swal({
+          title: "Login Successful",
+          text: "You will be redirected to the travel agent page shortly.",
+          icon: "success",
+          button: "OK",
+        }).then(() => {
+          // Redirect to the travel agent page
+          window.location.href = "/travelagenthome";
+        });
+
       } else {
-        // Handle unsuccessful login, show an error message, or perform other actions
+        // Handle unsuccessful login and show an error message
         console.error('Login failed:', response);
+
+        // Show error alert
+        swal({
+          title: "Login Failed",
+          text: "Please check your credentials and try again.",
+          icon: "error",
+          button: "OK",
+        });
       }
     } catch (error) {
-      // Handle errors that occur during the request (e.g., network error)
+      // Handle errors that occur during the request 
       console.error('Error during login:', error);
+
+      // Show error alert for network or other issues
+      swal({
+        title: "Login Failed",
+        text: "Please check your network connection and try again.",
+        icon: "error",
+        button: "OK",
+      });
     }
   }
     
