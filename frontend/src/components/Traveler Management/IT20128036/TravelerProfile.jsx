@@ -1,8 +1,18 @@
+/**
+ * File: TravelerProfile.jsx
+ * Author: IT20128036
+ * Description: This component is responsible for displaying a single traveler profile to backend office staff.
+ * It displays the traveler's details and booking details.
+ * The account status can be toggled between active and inactive.
+ * The traveler can be deleted.
+ * The traveler can be updated.
+ 
+ */
+
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Row, Col, Form } from "react-bootstrap";
-
 import "./userprofile.css";
 import "./contactUs.css";
 import Backoffice from "../../Navbar/Backoffice";

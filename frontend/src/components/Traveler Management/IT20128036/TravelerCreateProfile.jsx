@@ -1,10 +1,19 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+/**
+ * File: TravelerCreateProfile.jsx
+ * Author: IT20128036
+ * Description: This component is responsible for creating traveler profiles.
+ * It displays a form to enter traveler details and sends a POST request to the backend API to create a new traveler profile.
+ * The form fields are validated before sending the request.
+ * The form data is stored in the formData state variable.
+ * The formData state variable is updated when the user enters data into the form fields.
+ * The formData state variable is sent to the backend API when the user clicks the submit button.
+ * The formData state variable is reset when the request is successful.
+ */
 
+import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
 import styles from "./register.module.css";
-
 import Backoffice from "../../Navbar/Backoffice";
 import Swal from "sweetalert2";
 import { Row, Col } from "react-bootstrap";
