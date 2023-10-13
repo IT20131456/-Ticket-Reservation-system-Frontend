@@ -1,9 +1,21 @@
+/**
+ * File: ViewTrainSchedule.jsx
+ * Author: IT20127046
+ * @fileoverview This file renders the view train schedule page.
+ * View train schedule page displays all the train schedules in the database.
+ * Train schedules can be cancelled from this page.
+ * Train schedules can be updated from this page.
+ * Train schedules can be added from this page.
+ */
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Form, Container, Table, Badge } from "react-bootstrap";
+import { Form, Container, Table, Badge, Button } from "react-bootstrap";
 import BackofficeNavBar from "../Navbar/Backoffice";
 import {BASEURL_LOCAL_LOSHITH} from '../Common';
+import "./ViewTrainSchedule.css";
 
+// This function is used to render the view train schedule page.
 export default function ViewTrainSchedule() {
   const [trainScheduleData, setTrainScheduleData] = useState([]);
 
@@ -23,8 +35,21 @@ export default function ViewTrainSchedule() {
 
   }, []);
 
+  // This function is used to cancel a train schedule.
+  const onCancelSchedule = (id) => {
+    axios
+      .put(`${BASEURL_LOCAL_LOSHITH}/api/trainschedule/cancel/${id}`)
+      .then((res) => {
+        console.log(res);
+        fetchData();
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  };
+
   return (
-    <div>
+    <div className="setBackgroundImage">
         <BackofficeNavBar />
       <Container className="shadow pt-2 pb-2 bg-white mt-4 border rounded">
         <Form className="mt-2 p-3">
@@ -62,6 +87,9 @@ export default function ViewTrainSchedule() {
                   {/* <th>Stops</th> */}
                   <th>Seat Classes</th>
                   <th>No of Seats</th>
+                  <th>Status</th>
+                  <th>Update</th>
+                  <th>Cancel</th>
                 </tr>
               </thead>
               <tbody>
@@ -80,25 +108,49 @@ export default function ViewTrainSchedule() {
                       {/* <td>{feed.intermediate_stops}</td> */}
                       <td>{feed.seat_classes}</td>
                       <td>{feed.number_of_seats}</td>
-                      {/* {feed.lane01CounterTime === "40" ? (
+                      {feed.isActive === 1 ? (
                         <td>
                           <h5>
-                            <Badge bg="danger">High</Badge>
+                            <Badge bg="success">Active</Badge>
                           </h5>
                         </td>
-                      ) : feed.lane01CounterTime === "30" ? (
+                      ) : feed.isActive === 0 ? (
                         <td>
                           <h5>
-                            <Badge bg="warning">Medium</Badge>
+                            <Badge bg="warning">Not-Active</Badge>
+                          </h5>
+                        </td>
+                      ) : feed.isActive === 3 ? (
+                        <td>
+                          <h5>
+                            <Badge bg="secondary">Cancelled</Badge>
                           </h5>
                         </td>
                       ) : (
                         <td>
                           <h5>
-                            <Badge bg="success">Low</Badge>
+                            <Badge bg="danger">!Error</Badge>
                           </h5>
                         </td>
-                      )} */}
+                      )}
+                      <td>
+                        <Button
+                          className="btn btn-secondary"
+                          onClick={() => {
+                            window.location.href = `/trainschedule/update/${feed.id}`;
+                          }}
+                        >
+                          Update
+                        </Button>
+                        </td>
+                        <td>
+                        <Button
+                          className="btn btn-danger"
+                          onClick={onCancelSchedule(feed.id)}
+                        >
+                          Cancel
+                        </Button>
+                      </td>
                     </tr>
                   </>
                 ))}

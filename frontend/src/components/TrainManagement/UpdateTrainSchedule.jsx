@@ -1,16 +1,16 @@
 /**
- * File: AddTrainSchedule.jsx
+ * File: UpdateTrainSchedule.jsx
  * Author: IT20127046
- * @fileoverview This file provides the Add Train Schedule page.
- * Train schedules can be added by the backoffice staff.
- * Validations are performed for the input fields.
- * Backend API calls are made through axios.
- * 
+ * @fileoverview This file provides the Update Train Schedule page of the
+ *   Train Management feature.
+ *  Redirects to View Train Schedule page after successful update.
+ * Otherwise, an error message is displayed.
  */
 
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import { Form, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useParams } from "react-router-dom";
 import {
   faTrainSubway,
   faPersonWalkingLuggage,
@@ -21,7 +21,8 @@ import logo from "../../images/logo.png";
 import axios from "axios";
 import swal from "sweetalert";
 
-export default function AddTrainSchedule() {
+export default function UpdateTrainSchedule() {
+  const { id } = useParams();
   const [train_number, settrain_number] = useState("");
   const [train_name, settrain_name] = useState("");
   const [train_type, settrain_type] = useState("");
@@ -41,20 +42,42 @@ export default function AddTrainSchedule() {
     "Second-Class",
   ]);
   const [numberOfSeatsArray, setNumberOfSeatsArray] = useState(["50", "100"]);
+  const [isActive, setIsActive] = useState(0);
+
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5041/api/trainschedule/${id}`)
+      .then((response) => {
+        settrain_number(response.data.train_number);
+        settrain_name(response.data.train_name);
+        settrain_type(response.data.train_type);
+        settrain_description(response.data.train_description);
+        setdeparture_station(response.data.departure_station);
+        setarrival_station(response.data.arrival_station);
+        setdeparture_time(response.data.departure_time);
+        setarrival_time(response.data.arrival_time);
+        settravel_duration(response.data.travel_duration);
+        setintermediate_stops(response.data.intermediate_stops);
+        //   setseat_classes(response.data.seat_classes);
+        //   setnumber_of_seats(response.data.number_of_seats);
+        setIsActive(response.data.isActive);
+      });
+  }, []);
 
   const onSubmit = (e) => {
     e.preventDefault();
 
+    // Update the intermediate stops array
     const updateIntermediateStopsArray = () => {
       // Split the comma-separated values and remove any leading/trailing spaces
-      const stopsArray = intermediate_stops
-        .split(",")
-        .map((stop) => stop.trim());
-      setIntermediateStopsArray(stopsArray);
+    //   const stopsArray = intermediate_stops
+    //     .split(",")
+    //     .map((stop) => stop.trim());
+    //   setIntermediateStopsArray(stopsArray);
 
       // Now that the intermediate stops array is updated, you can create newTrainSchedule
-      const newTrainSchedule = {
-        id: "",
+      const updateTrainSchedule = {
+        id: id,
         train_number: train_number,
         train_name: train_name,
         train_type: train_type,
@@ -64,16 +87,16 @@ export default function AddTrainSchedule() {
         departure_time: departure_time,
         arrival_time: arrival_time,
         travel_duration: travel_duration,
-        intermediate_stops: stopsArray, // Use the updated stopsArray here
+        intermediate_stops: intermediateStopsArray, // Use the updated stopsArray here
         seat_classes: seatClassesArray,
         number_of_seats: numberOfSeatsArray,
-        isActive: 1,
+        isActive: isActive,
       };
 
-      console.log(newTrainSchedule);
+      console.log(updateTrainSchedule);
 
       axios
-        .post(`http://localhost:5041/api/trainschedule`, newTrainSchedule)
+        .put(`http://localhost:5041/api/trainschedule/${id}`, updateTrainSchedule)
         .then((res) => {
           // Check if the response status code is 200 (OK)
           if (res.status === 200) {
@@ -107,7 +130,7 @@ export default function AddTrainSchedule() {
           <Form className="mt-2 p-3">
             <div className="row">
               <h4 className="text-center text-success">
-                Add New Train Schedule
+                Update Train Schedule
               </h4>
               {/* <h6 className="text-center">Colombo - Badulla</h6> */}
             </div>
@@ -122,6 +145,47 @@ export default function AddTrainSchedule() {
               <hr style={{ height: 10 }} />
             </div>
             <h4 className="text-danger">Train Information:</h4> &nbsp;{" "}
+            {isActive === 1 ? (
+              <>
+                <Button
+                  variant="success"
+                  onClick={() => {
+                    setIsActive(1);
+                  }}
+                >
+                  Active Train
+                </Button>
+                &nbsp;{" "}
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setIsActive(0);
+                  }}
+                >
+                  Deactive Train
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setIsActive(1);
+                  }}
+                >
+                  Active Train
+                </Button>
+                &nbsp;{" "}
+                <Button
+                  variant="danger"
+                  onClick={() => {
+                    setIsActive(0);
+                  }}
+                >
+                  Deactive Train
+                </Button>
+              </>
+            )}
             <div className="row">
               <div className="col-md-6">
                 <Form.Group
@@ -370,7 +434,7 @@ export default function AddTrainSchedule() {
               <div className="col-md-10 mt-5 p-2 d-flex justify-content-end"></div>
               <div className="col-md-2 mt-5 d-flex justify-content-end">
                 <Button variant="success" type="submit" onClick={onSubmit}>
-                  Add Train Schedule
+                  Update Train Schedule
                 </Button>
               </div>
             </div>
