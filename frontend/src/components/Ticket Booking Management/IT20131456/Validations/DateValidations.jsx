@@ -19,8 +19,7 @@ export const getCurrentDate = () => {
     return { formattedCurrentDate, formattedMinDate, formattedMaxDate };
   };
   
-  // Function to format a date as 'YYYY-MM-DD'
-  function formatDate(date) {
+   function formatDate(date) {
 
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); 
@@ -30,9 +29,7 @@ export const getCurrentDate = () => {
   }
 
 
-//Updating reservations (at least 5 days before the reservation date)
 
-//Canceling reservations (at least 5 days before the reservation date)
 
 
 
