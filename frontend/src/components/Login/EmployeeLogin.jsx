@@ -9,6 +9,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import logo from "../../images/logo.png";
 import "./EmployeeLogin.css"; 
+import LandningPageNav from '../Navbar/LandningPageNav'
 
 
 function EmployeeLogin() {
@@ -143,6 +144,8 @@ function EmployeeLogin() {
   }
     
   return (
+    <div>
+    <LandningPageNav/>   
     <div className="login-panel-bg">
         <div className="login-panel">
       <div className="login-container">
@@ -203,6 +206,7 @@ function EmployeeLogin() {
         <p />
         <p />
       </div>
+    </div>
     </div>
     </div>
   );
