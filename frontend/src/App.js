@@ -32,6 +32,7 @@ import AddTrainSchedule from "./components/TrainManagement/AddTrainSchedule";
 import ViewTrainSchedule from "./components/TrainManagement/ViewTrainSchedule";
 
 import UserDetails from "./components/UserManagement/UserDetails";
+import UpdateTrainSchedule from "./components/TrainManagement/UpdateTrainSchedule";
 
 
 
@@ -74,6 +75,7 @@ function App() {
           
         <Route path="/trainschedule/add" element={<AddTrainSchedule />} />
         <Route path="/trainschedule/view" element={<ViewTrainSchedule />} />
+        <Route path="/trainschedule/update/:id" element={<UpdateTrainSchedule />} />
 
       </Routes>
     </BrowserRouter>
