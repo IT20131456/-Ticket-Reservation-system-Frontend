@@ -1,3 +1,14 @@
+/**
+ * File: UpdateTravelerProfile.jsx
+ * Author: IT20128036
+ * Description: This component is responsible for updating traveler profiles by backend office staff.
+ * It displays a form with the current traveler profile data.
+ * The form data is updated when the user makes changes.
+ * When the user submits the form, the updated data is sent to the backend using a PUT request.
+ * The user is then redirected to the viewtravelerprofile page.
+  
+ */
+
 import React, { useState, useEffect } from "react";
 import { Form, Button, Container, Col, Row } from "react-bootstrap";
 import { useParams } from "react-router-dom";
@@ -10,6 +21,7 @@ function UpdateTravelerProfile() {
   const navigate = useNavigate();
   const { NIC } = useParams();
 
+  // Form data state
   const [formData, setFormData] = useState({
     nic: "",
     fullName: "",
@@ -35,11 +47,13 @@ function UpdateTravelerProfile() {
       });
   }, [NIC]);
 
+  // Handle form data change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle form submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
