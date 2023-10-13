@@ -1,16 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Form, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {faTrainSubway,faCoins,faCircleCheck, faPersonWalkingLuggage, faCircleXmark,} from "@fortawesome/free-solid-svg-icons";
+import {
+  faTrainSubway,
+  faCoins,
+  faCircleCheck,
+  faPersonWalkingLuggage,
+  faCircleXmark,
+} from "@fortawesome/free-solid-svg-icons";
 import TravelAgentNavBar from "../../Navbar/Travel Agent";
-import { getCurrentDate, getFormattedDates,} from "./Validations/DateValidations";
-import { validateNIC } from "./Validations/NicValidation";
+import {
+  getCurrentDate,
+  getFormattedDates,
+} from "./Validations/DateValidations";
 import { calculateTotalPrice } from "./Validations/TicketPriceValidation";
 import axios from "axios";
 import "./styles.css";
 import swal from "sweetalert";
 
 export default function NewReservations() {
+  const [booking_details, setBookingDetails] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
@@ -30,15 +39,50 @@ export default function NewReservations() {
   const [fromValidateSuccess, setfromValidateSuccess] = useState("");
   const [validateAlert, setValidateAlert] = useState(false);
   const [validateAlertSuccess, setValidateAlertSuccess] = useState(false);
-  
+
+  //Retriew Booking Details
+  useEffect(() => {
+    axios
+      .get(`http://localhost:5041/api/TicketBooking`)
+      .then((response) => {
+        setBookingDetails(response.data);
+        // Extract and display all reference IDs
+        const referenceIds = response.data.map((item) => item.reference_id);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  }, []);
 
   const onSubmitNIC = () => {
-    const { success: successMessage, error: errorMessage } = validateNIC(
-      parseInt(enteredNIC, 10)
+    const enteredNICNumber = parseInt(enteredNIC, 10); // Parse enteredNIC to a Integer number
+
+    const referenceIds = booking_details.map((item) =>
+      parseInt(item.reference_id, 10)
     );
-    setSuccess(successMessage);
-    setError(errorMessage);
-    setIsInputGroupDisabled(errorMessage ? true : false);
+    console.log(referenceIds.length);
+
+    // Count the occurrences of enteredNICNumber in referenceIds
+    const countOfEnteredNIC = referenceIds.filter(
+      (id) => id === enteredNICNumber
+    ).length;
+
+    // Check both conditions
+    if (countOfEnteredNIC < 4 && referenceIds.includes(enteredNICNumber)) {
+      setSuccess("NIC Validated Successfully");
+      setError("");
+      setIsInputGroupDisabled(false);
+    } else if (countOfEnteredNIC >= 4) {
+      // Entered NIC found 4 or more times in Database
+      setSuccess("");
+      setError("Already User Booked 4 Reservations");
+      setIsInputGroupDisabled(true);
+    } else {
+      // User Not Found or Entered NIC Not Matching Reference IDs
+      setSuccess("");
+      setError("User Not Found In Database");
+      setIsInputGroupDisabled(true);
+    }
   };
 
   const currentDate = getCurrentDate();
@@ -57,7 +101,7 @@ export default function NewReservations() {
 
   const onSubmit = (e) => {
     e.preventDefault();
-
+    //Check Input Validations
     if (from === "") {
       setValidateAlert(true);
       setFromValidate("Please Input Starting Point");
@@ -77,7 +121,7 @@ export default function NewReservations() {
       setValidateAlert(false);
 
       const data = {
-        Id:"",
+        Id: "",
         reservation_number: reservation_no,
         reference_id: enteredNIC,
         train_id: train_id,
@@ -93,30 +137,26 @@ export default function NewReservations() {
         status: status,
       };
       console.log(data);
-      
-      axios.post(`http://localhost:5041/api/TicketBooking`, data)
-      .then((res) => {
-        // Check if the response status code is 200 (OK)
-        if (res.status === 200) {
-          swal("Reservation successful", "", "success");
-    
-          setTimeout(() => {
-            window.location = "/viewreservations";
-          }, 3000);
-        } else {
-          console.error("Error: Unexpected response from server");
-          // Handle unexpected response from the server if needed
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error.message);
-        // Handle network or other errors if needed
-      });        
-     
-    }
-};
+      //Api For save data in backend
+      axios
+        .post(`http://localhost:5041/api/TicketBooking`, data)
+        .then((res) => {
+          if (res.status === 200) {
+            swal("Reservation successful", "", "success");
 
-    
+            setTimeout(() => {
+              window.location = "/viewreservations";
+            }, 3000);
+          } else {
+            console.error("Error: Unexpected response from server");
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error.message);
+        });
+    }
+  };
+
   return (
     <div className="body">
       <TravelAgentNavBar />
@@ -125,7 +165,11 @@ export default function NewReservations() {
 
       <div className="content-column m-3 mt-5">
         <Container className="shadow pt-2 pb-2 custom-bg-white mt-4 border rounded">
-          <Form className="mt-2 p-3" onSubmit={onSubmit} encType="multipart/form-data">
+          <Form
+            className="mt-2 p-3"
+            onSubmit={onSubmit}
+            encType="multipart/form-data"
+          >
             <div className="row">
               <h3 className="text-center text-success">
                 05 Yarl Devi Express &nbsp;

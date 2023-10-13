@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Container, Table, Button } from "react-bootstrap";
-import TravelAgentNavBar from "../../Navbar/Travel Agent";
+import TravelAgentNavBar from "../IT20131456/ViewResrvationNavbar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare, faTrashCan, faCalendarPlus,} from "@fortawesome/free-solid-svg-icons";
 import "./styles.css";
@@ -14,7 +14,10 @@ export default function ViewResrvations() {
   const [fromValidateSuccess, setfromValidateSuccess] = useState("");
   const [validateAlert, setValidateAlert] = useState(false);
   const [validateAlertSuccess, setValidateAlertSuccess] = useState(false);
+  const [filteredResults, setFilteredResults] = useState([]);
+  const [searchInput, setSearchInput] = useState("");
 
+//Retrive data from the database
   useEffect(() => {
     axios
       .get(`http://localhost:5041/api/TicketBooking`)
@@ -26,6 +29,7 @@ export default function ViewResrvations() {
       });
   }, []);
 
+  //Function to check the reservation date is within 5 days from the booking date
   const isActionButtonDisabled = (reservationDate) => {
     const currentDate = new Date();
     const formattedReservationDate = new Date(reservationDate);
@@ -61,6 +65,22 @@ export default function ViewResrvations() {
     });
   };
 
+  //Search booking details
+  const searchItems = (searchValue) => {
+    setSearchInput(searchValue);
+    if (searchInput !== "") {
+      const filteredData = booking_details.filter((item) => {
+        return Object.values(item)
+          .join("")
+          .toLowerCase()
+          .includes(searchInput.toLowerCase());
+      });
+      setFilteredResults(filteredData);
+    } else {
+      setFilteredResults(booking_details);
+    }
+  };
+
   return (
     <div className="body">
       <TravelAgentNavBar />
@@ -68,8 +88,18 @@ export default function ViewResrvations() {
         <div className="mt-5 ">
           <div className="shadow  p-4 custom-bg-white mt-5 border rounded">
             <div className="row">
-              <div className="col-md-10">
+
+              <div className="col-md-7">
                 <h4>Ticket Bookings</h4>
+              </div>
+
+              <div className="col-md-3">
+              <input
+                  className="form-control border border-dark"
+                  type="search"
+                  placeholder="Search Booking"
+                  onChange={(e) => searchItems(e.target.value)}
+                ></input>            
               </div>
               <div className="col-md-2">
                 <Button
@@ -80,8 +110,10 @@ export default function ViewResrvations() {
                 >
                   <FontAwesomeIcon icon={faCalendarPlus} />
                   &nbsp;New Reservation
-                </Button>
-              </div>
+                </Button>              
+              </div>  
+                
+          
             </div>
 
             <hr style={{ height: 10 }} />
@@ -103,59 +135,89 @@ export default function ViewResrvations() {
                 </tr>
               </thead>
               <tbody>
-                {booking_details.map((booking, index) => {
-                  return (
-                    <tr key={booking.id}>
-                      <th>{index + 1}</th>
-                      <td>{booking.reference_id}</td>
-                      <td>{booking.train_id}</td>
-                      <td>{booking.from}</td>
-                      <td>{booking.to}</td>
-                      <td>{booking.booking_date}</td>
-                      <td>{booking.reservation_date}</td>
-                      <td>{booking.ticket_class}</td>
-                      <td>{booking.number_of_tickets}</td>
-                      <td>{"LKR" + " " + booking.total_price}</td>
-                      <td>{booking.status}</td>
-                      <td className="text-center">
-                        <Button
-                          className={`bg-success text-white m- ml-0 ${
-                            isActionButtonDisabled(booking.reservation_date)
-                              ? "disabled"
-                              : ""
-                          }`}
-                          disabled={isActionButtonDisabled(
-                            booking.reservation_date
-                          )}
-                          onClick=
-                          {() => {
-                            window.location.href = `/updatereservation/${booking.id}`;
-                          }}
-                        >
-                         
-                          <FontAwesomeIcon icon={faPenToSquare} />
-                          &nbsp;Update
-                        </Button>
-                        &nbsp;&nbsp;
-                        <Button
-                          className={`bg-danger text-white m- ml-0 ${
-                            isActionButtonDisabled(booking.reservation_date)
-                              ? "disabled"
-                              : ""
-                          }`}
-                          disabled={isActionButtonDisabled(
-                            booking.reservation_date
-                          )}
-                          onClick={() => onDelete(booking.id)}
-                        >
-                          <FontAwesomeIcon icon={faTrashCan} />
-                          &nbsp;Delete
-                        </Button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
+  {searchInput.length > 0
+    ? filteredResults.map((booking, index) => (
+        <tr key={booking.id}>
+          <th>{index + 1}</th>
+          <td>{booking.reference_id}</td>
+          <td>{booking.train_id}</td>
+          <td>{booking.from}</td>
+          <td>{booking.to}</td>
+          <td>{booking.booking_date}</td>
+          <td>{booking.reservation_date}</td>
+          <td>{booking.ticket_class}</td>
+          <td>{booking.number_of_tickets}</td>
+          <td>{"LKR" + " " + booking.total_price}</td>
+          <td>{booking.status}</td>
+          <td className="text-center">
+            <Button
+              className={`bg-success text-white m- ml-0 ${
+                isActionButtonDisabled(booking.reservation_date) ? "disabled" : ""
+              }`}
+              disabled={isActionButtonDisabled(booking.reservation_date)}
+              onClick={() => {
+                window.location.href = `/updatereservation/${booking.id}`;
+              }}
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+              &nbsp;Update
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              className={`bg-danger text-white m- ml-0 ${
+                isActionButtonDisabled(booking.reservation_date) ? "disabled" : ""
+              }`}
+              disabled={isActionButtonDisabled(booking.reservation_date)}
+              onClick={() => onDelete(booking.id)}
+            >
+              <FontAwesomeIcon icon={faTrashCan} />
+              &nbsp;Delete
+            </Button>
+          </td>
+        </tr>
+      ))
+    : booking_details.map((booking, index) => (
+        <tr key={booking.id}>
+          <th>{index + 1}</th>
+          <td>{booking.reference_id}</td>
+          <td>{booking.train_id}</td>
+          <td>{booking.from}</td>
+          <td>{booking.to}</td>
+          <td>{booking.booking_date}</td>
+          <td>{booking.reservation_date}</td>
+          <td>{booking.ticket_class}</td>
+          <td>{booking.number_of_tickets}</td>
+          <td>{"LKR" + " " + booking.total_price}</td>
+          <td>{booking.status}</td>
+          <td className="text-center">
+            <Button
+              className={`bg-success text-white m- ml-0 ${
+                isActionButtonDisabled(booking.reservation_date) ? "disabled" : ""
+              }`}
+              disabled={isActionButtonDisabled(booking.reservation_date)}
+              onClick={() => {
+                window.location.href = `/updatereservation/${booking.id}`;
+              }}
+            >
+              <FontAwesomeIcon icon={faPenToSquare} />
+              &nbsp;Update
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              className={`bg-danger text-white m- ml-0 ${
+                isActionButtonDisabled(booking.reservation_date) ? "disabled" : ""
+              }`}
+              disabled={isActionButtonDisabled(booking.reservation_date)}
+              onClick={() => onDelete(booking.id)}
+            >
+              <FontAwesomeIcon icon={faTrashCan} />
+              &nbsp;Delete
+            </Button>
+          </td>
+        </tr>
+      ))}
+</tbody>
+
             </Table>
           </div>
         </div>
