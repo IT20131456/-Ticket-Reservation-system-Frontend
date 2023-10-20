@@ -1,3 +1,9 @@
+/**
+ * Filename: UpdateReservation.js
+ * Author: IT20131456
+ * Description: React component for updating reservations in the Ticket Booking system.
+ *              Allows travel agents to modify reservation details such as stations, dates, ticket class, and quantity.
+ */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
