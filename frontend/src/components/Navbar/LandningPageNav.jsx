@@ -3,11 +3,40 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
 import logo from "../../images/logo.png";
-import trainLogo from "../../images/train-logo-01.png";
+import swal from "sweetalert";
 
 function LandningPageNav() {
+
+  const handleSignupClick = () => {
+    // Display SweetAlert message on signup button click
+    swal("Choose Your Role", "Sign Up as a Travel Agent or Back Office Staff?",  {
+      buttons: {
+        redirectEmployee: {
+          text: "Travel Agent",
+          value: "travelagent",
+        },
+        redirectTravelAgent: {
+          text: "Back Office",
+          value: "backoffice",
+        },
+      },
+    }).then((value) => {
+      // Redirect based on the button clicked
+      switch (value) {
+        case "travelagent":
+          window.location.href = "/travelagent/registration";
+          break;
+        case "backoffice":
+          window.location.href = "/backoffice/registration";
+          break;
+        default:
+          // Handle other cases if needed
+          break;
+      }
+    });
+  };
+
   return (
     <Navbar
       bg=""
@@ -47,6 +76,9 @@ function LandningPageNav() {
               backgroundColor: "white",
               borderColor: "black",
             }}
+            onClick={() => {
+              window.location.href = "/employee/login";
+            }}
           >
             Login
           </Button>
@@ -58,6 +90,7 @@ function LandningPageNav() {
               backgroundColor: "white",
               borderColor: "black",
             }}
+            onClick={handleSignupClick}
           >
             Signup
           </Button>
