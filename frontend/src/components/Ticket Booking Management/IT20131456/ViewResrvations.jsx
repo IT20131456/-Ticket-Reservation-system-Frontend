@@ -1,3 +1,9 @@
+/**
+ * Filename: ViewReservations.js
+ * Author: IT20131456
+ * Description: React component for displaying and managing reservations in the Ticket Booking system.
+ *              Allows travel agents to view, update, and delete reservations.
+ */
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Container, Table, Button } from "react-bootstrap";

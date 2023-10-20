@@ -1,3 +1,8 @@
+/**
+ * Filename: TicketPriceValidation.js
+ * Author: It20131456
+ * Description: Utility functions for validating ticket prices and calculating total prices in the Ticket Booking system.
+ */
 export const classPrices = {
   1: 1000, // First Class price per ticket
   2: 800, // Second Class price per ticket

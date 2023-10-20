@@ -1,3 +1,9 @@
+/**
+ * Filename: NewReservations.js
+ * Author: IT20131456 
+ * Description: React component for making new reservations in the Ticket Booking system.
+ *              Allows travel agents to book tickets for travelers by entering necessary details.
+ */
 import React, { useState, useEffect } from "react";
 import { Form, Container, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
