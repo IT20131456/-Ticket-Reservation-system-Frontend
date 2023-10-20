@@ -5,7 +5,7 @@
  * Train schedules can be added by the backoffice staff.
  * Validations are performed for the input fields.
  * Backend API calls are made through axios.
- * 
+ *
  */
 
 import { React, useState } from "react";
@@ -46,55 +46,89 @@ export default function AddTrainSchedule() {
     e.preventDefault();
 
     const updateIntermediateStopsArray = () => {
-      // Split the comma-separated values and remove any leading/trailing spaces
-      const stopsArray = intermediate_stops
-        .split(",")
-        .map((stop) => stop.trim());
-      setIntermediateStopsArray(stopsArray);
+      if (
+        train_number === "" ||
+        train_name === "" ||
+        train_type === "" ||
+        departure_station === "" ||
+        arrival_station === ""
+      ) {
+        swal("Please fill all the required fields", "", "error");
+        return;
+      } else {
+        if (train_number.length !== 4) {
+          swal("Train number should be 4 characters long", "", "error");
+          return;
+        } else {
+          // Split the comma-separated values and remove any leading/trailing spaces
+          const stopsArray = intermediate_stops
+            .split(",")
+            .map((stop) => stop.trim());
+          setIntermediateStopsArray(stopsArray);
 
-      // Now that the intermediate stops array is updated, you can create newTrainSchedule
-      const newTrainSchedule = {
-        id: "",
-        train_number: train_number,
-        train_name: train_name,
-        train_type: train_type,
-        train_description: train_description,
-        departure_station: departure_station,
-        arrival_station: arrival_station,
-        departure_time: departure_time,
-        arrival_time: arrival_time,
-        travel_duration: travel_duration,
-        intermediate_stops: stopsArray, // Use the updated stopsArray here
-        seat_classes: seatClassesArray,
-        number_of_seats: numberOfSeatsArray,
-        isActive: 1,
-      };
+          // Now that the intermediate stops array is updated, you can create newTrainSchedule
+          const newTrainSchedule = {
+            id: "",
+            train_number: train_number,
+            train_name: train_name,
+            train_type: train_type,
+            train_description: train_description,
+            departure_station: departure_station,
+            arrival_station: arrival_station,
+            departure_time: departure_time,
+            arrival_time: arrival_time,
+            travel_duration: travel_duration,
+            intermediate_stops: stopsArray, // Use the updated stopsArray here
+            seat_classes: seatClassesArray,
+            number_of_seats: numberOfSeatsArray,
+            isActive: 1,
+          };
 
-      console.log(newTrainSchedule);
+          console.log(newTrainSchedule);
 
-      axios
-        .post(`http://localhost:5041/api/trainschedule`, newTrainSchedule)
-        .then((res) => {
-          // Check if the response status code is 200 (OK)
-          if (res.status === 200) {
-            swal("Scheduled successful", "", "success");
+          axios
+            .post(`http://localhost:5041/api/trainschedule`, newTrainSchedule)
+            .then((res) => {
+              // Check if the response status code is 200 (OK)
+              if (res.status === 200) {
+                swal("Scheduled successful", "", "success");
 
-            setTimeout(() => {
-              window.location = "/trainschedule/view";
-            }, 3000);
-          } else {
-            console.error("Error: Unexpected response from server");
-            // Handle unexpected response from the server if needed
-          }
-        })
-        .catch((error) => {
-          console.error("Error:", error.message);
-          // Handle network or other errors if needed
-        });
+                setTimeout(() => {
+                  window.location = "/trainschedule/view";
+                }, 3000);
+              } else {
+                console.error("Error: Unexpected response from server");
+                // Handle unexpected response from the server if needed
+              }
+            })
+            .catch((error) => {
+              console.error("Error:", error.message);
+              // Handle network or other errors if needed
+            });
+        }
+
+        
+      }
     };
-
     updateIntermediateStopsArray();
   };
+
+  const onSample = (e) => {
+    e.preventDefault();
+
+    settrain_number("1015");
+    settrain_name("Udarata Menike");
+    settrain_type("Express");
+    settrain_description("1015 Udarata Menike - Colombo Fort - Badulla");
+    setdeparture_station("Colombo-Fort");
+    setarrival_station("Badulla");
+    setdeparture_time("05:55");
+    setarrival_time("15:15");
+    settravel_duration("9 hours 20 minutes");
+    setintermediate_stops("Colombo Fort,Ragama,Gampaha,Veyangoda,Polgahawela,Kandy,Gampola,Nanu Oya,Ambewela,Bandarawela,Ella,Badulla");
+    setseat_classes("First-Class, Second-Class");
+    setnumber_of_seats("50, 100");
+  }
 
   return (
     <div>
@@ -129,7 +163,7 @@ export default function AddTrainSchedule() {
                   controlId="exampleForm.ControlInput2"
                 >
                   <Form.Label>
-                    <label>Train Number(ID):</label>
+                    <label>*Train Number(ID):</label>
                   </Form.Label>
                   <Form.Control
                     type="text"
@@ -148,7 +182,7 @@ export default function AddTrainSchedule() {
                   controlId="exampleForm.ControlInput1"
                 >
                   <Form.Label>
-                    <label>Train Name:</label>
+                    <label>*Train Name:</label>
                   </Form.Label>
                   <Form.Control
                     type="text"
@@ -168,7 +202,7 @@ export default function AddTrainSchedule() {
                   controlId="exampleForm.ControlInput2"
                 >
                   <Form.Label>
-                    <label>Train Type:</label>
+                    <label>*Train Type:</label>
                   </Form.Label>
                   <Form.Select
                     aria-label="Default select example"
@@ -211,7 +245,7 @@ export default function AddTrainSchedule() {
                   controlId="exampleForm.ControlInput2"
                 >
                   <Form.Label>
-                    <label>Departure Station:</label>
+                    <label>*Departure Station:</label>
                   </Form.Label>
                   <Form.Select
                     aria-label="Default select example"
@@ -233,7 +267,7 @@ export default function AddTrainSchedule() {
                   controlId="exampleForm.ControlInput2"
                 >
                   <Form.Label>
-                    <label>Arrival Station:</label>
+                    <label>*Arrival Station:</label>
                   </Form.Label>
                   <Form.Select
                     aria-label="Default select example"
@@ -371,6 +405,15 @@ export default function AddTrainSchedule() {
               <div className="col-md-2 mt-5 d-flex justify-content-end">
                 <Button variant="success" type="submit" onClick={onSubmit}>
                   Add Train Schedule
+                </Button>
+              </div>
+            </div>
+            {/* Sample Data Button */}
+            <div className="row">
+              <div className="col-md-10 mt-5 p-2 d-flex justify-content-end"></div>
+              <div className="col-md-2 mt-5 d-flex justify-content-end">
+                <Button variant="secondary" type="submit" onClick={onSample}>
+                  Add Sample Date
                 </Button>
               </div>
             </div>

@@ -50,20 +50,8 @@ function Backoffice() {
 
             <Nav.Link href="/trainschedule/view">Train Schedule</Nav.Link>
             <Nav.Link href="/usermanagement">Users</Nav.Link>
-            <NavDropdown title="Bookings" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Passenager
-            </Nav.Link>
+            
+            
           </Nav>
           <Form className="d-flex" style={{ marginRight: "65px" }}>
             <Form.Control

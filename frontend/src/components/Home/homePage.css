@@ -1,0 +1,6 @@
+.backoffice-backgroud-img {
+	background-image: url('../../../public/img/gallery-3.jpg');
+    background-size: cover; /* Adjust as needed to cover the container */
+    background-repeat: no-repeat;
+    background-position: center center;
+}
