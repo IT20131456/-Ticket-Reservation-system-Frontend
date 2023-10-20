@@ -1,3 +1,8 @@
+/**
+ * Filename: DateUtils.js
+ * Author: IT20131456
+ * Description: Utility functions for handling date operations in the Ticket Booking system.
+ */
 //Reservation date within 30 days from the booking date
 
 // Function to get the current date
