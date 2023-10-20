@@ -67,7 +67,7 @@ function UserDetails() {
 
     // Fetch user session data and user data on component load
     useEffect(() => {
-        getSessionData();
+        //getSessionData();
 
         if (userType === "backendOfficeStaff") {
             fetchUserData();

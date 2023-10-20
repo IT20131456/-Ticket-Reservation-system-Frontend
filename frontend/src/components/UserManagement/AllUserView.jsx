@@ -31,7 +31,7 @@ function AllUserView() {
 
   // Fetch user session data and data lists on component load
   useEffect(() => {
-    getSessionData();
+    //getSessionData();
     fetchStaffData();
     fetchTravelAgentData();
     fetchTravelerData();
@@ -115,9 +115,7 @@ function AllUserView() {
     <div className="body">
       <Backoffice />
       <div className="custom-container-bg-white">
-        {loading ? (
-          <div>Loading session data...</div>
-        ) : (
+        
           <div>
             <h1 style={{ textAlign: 'center', color: '#191970' }}>All Accounts</h1>
 
@@ -211,7 +209,7 @@ function AllUserView() {
               </Tab>
             </Tabs>
           </div>
-        )}
+        
       </div>
     </div>
   );
